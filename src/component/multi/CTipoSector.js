@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { useState, useRef, useEffect } from "react";
 import ApiUrls from "../../utils/ApiInvoker";
 import { useNavigate } from "react-router-dom";
@@ -123,7 +124,7 @@ export default function CTipoSector() {
   //************************** PAGINACION */
   const [paginaActual, setPaginaActual] = useState(1);
   //const [peliculas, setPeliculas] = useState([]);
-  const PAGINABLOQUE = 4;
+  const PAGINABLOQUE = 10;
 
   let listatipoSectores = lista;
   //buscaPelicula();
@@ -205,7 +206,7 @@ export default function CTipoSector() {
                         <h3 className="card-title">Lista de tipo Sectores</h3>
                       </div>
 
-                      <div className="card-body">
+                      <div className="card-body" >
                         <table
                           id="example2"
                           className="table table-bordered table-hover"
@@ -239,16 +240,16 @@ export default function CTipoSector() {
                           <tfoot>
                             <tr>
                               <th colSpan="2">
-                                <Paginacion
-                                  pagina={paginaActual}
-                                  total={getTotalPaginas()}
-                                  cambioPage={(pagina) => {
-                                    settipoSector({
-                                      nombre_tipo_sector: "",
-                                    });
-                                    setPaginaActual(pagina);
-                                  }}
-                                />
+                                <div key={uuid()}><Paginacion
+                                pagina={paginaActual}
+                                total={getTotalPaginas()}
+                                cambioPage={(pagina) => {
+                                  settipoSector({
+                                    nombre_tipo_sector: "",
+                                  });
+                                  setPaginaActual(pagina);
+                                }}
+                              /></div>
                               </th>
                             </tr>
                           </tfoot>

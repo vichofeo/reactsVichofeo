@@ -47,6 +47,7 @@ var sectorController = require("../api/controllers/mSectorController")
 var espacioController = require("../api/controllers/mEspacioController")
 var escenarioController = require("../api/controllers/mEscenarioController")
 var autorizacionController = require("../api/controllers/mAutorizacionController")
+var itemAdicionalController = require("../api/controllers/mItemsController")
 //registro usuario
 
 
@@ -85,8 +86,19 @@ router.get('/validateNameEscenario/:name', escenarioController.nameValidate)
 router.get('/viewEscenario', escenarioController.viewEscenario)
 router.post('/addEscenario', escenarioController.addEscenario)
 router.put('/updateEscenario', escenarioController.updateEscenario)
+router.put('/updateEscenarioAdicionales', escenarioController.updateEscenarioAdicionales)
+
+router.get('/validateNameItemAdicional/:name', itemAdicionalController.nameValidate)
+router.get('/viewItemAdicional', itemAdicionalController.viewItemAdicional)
+router.post('/addItemAdicional', itemAdicionalController.addItemAdicional)
+router.put('/updateItemAdicional', itemAdicionalController.updateItemAdicional)
 
 router.get('/initial', autorizacionController.initial)
+router.get('/viewAuto', autorizacionController.viewProgramacion)
+router.post('/byFecha', autorizacionController.searchByFecha)
+router.post('/byFechaHora', autorizacionController.searchByFechaHora)
+router.post('/byFechaRango', autorizacionController.searchByFechaRangoHora)
+router.post('/addAutorizacion', autorizacionController.addAutorzacion)
 
 router.get("/*", function (req, res, err) {
   res.status(400).send({ message: "Servicio invalido" });

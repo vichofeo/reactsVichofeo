@@ -1,13 +1,14 @@
+import { v4 as uuid } from "uuid";
 export default function Paginacion(props) {
   const getPaginacion = () => {
     const pages = [];
     for (let i = 0; i < props.total; i++) {
       let j = i + 1;
       pages.push(
-        <a key={`page${i}`} href={"#"}
+        <a
           className={props.pagina === j ? "active" : ""}
           onClick={() => props.cambioPage(j)}
-        >
+        key={uuid()}>
           {i + 1}
         </a>
       );
@@ -16,10 +17,10 @@ export default function Paginacion(props) {
   };
 
   return (
-    <div className="topbar-filter">
+    <div className="topbar-filter" >
       <label>Registros por Pagina:</label>
 
-      <div className="pagination2">
+      <div className="pagination2" key={uuid()}>
         <span>
           Page {props.pagina} of {props.total}:
         </span>

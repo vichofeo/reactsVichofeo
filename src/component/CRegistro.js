@@ -335,7 +335,7 @@ export default function CRegistro() {
                         </h3>
                       </div>
 
-                      <div className="card-body">
+                      <div className="card-body" key={uuid()}>
                         <table
                           id="example2"
                           className="table table-bordered table-hover"
@@ -350,7 +350,7 @@ export default function CRegistro() {
                           </thead>
                           <tbody>
                             {listaLuchadores.map((i, index) => (
-                              <tr >
+                              <tr key={uuid()}>
                                 <td>
                                 <a  href="#"
                                 className="badge badge-warning"

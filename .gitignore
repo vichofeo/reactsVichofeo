@@ -2,6 +2,7 @@
 
 # dependencies
 /public/plugins
+//public/muss
 /public/images
 /public/dist
 /node_modules
