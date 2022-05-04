@@ -234,7 +234,7 @@ const searchByFechaRangoHora = async (req, res, err) => {
       }
     );
     let lok = true;
-    let mensaje = "Fecha Libre, puede agregar (rangos)";
+    let mensaje = "Fecha Libre, puede agregar";
     if (ocupados.length > 0) {
       lok = false;
       mensaje = "Usted no puede agregar estos datos. Vuelva a intentarlo";

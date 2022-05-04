@@ -314,9 +314,6 @@ export default function CAutorizacion() {
         clase = "badge badge-pill badge-danger";
         break;
     }
-    console.log("el link es: " + link)
-    console.log(request)
-    console.log("------------0000000---------" )
     //guarda
     ApiUrls.invokePOST(
       link,

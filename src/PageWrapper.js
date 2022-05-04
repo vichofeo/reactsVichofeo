@@ -53,7 +53,7 @@ export default function PageWrapper(props) {
               <li className="nav-header">Menu</li>
 
               <li className="nav-item">
-                <a href="calendar.html" className="nav-link">
+                <a href="/calendar.htm" className="nav-link">
                   <i className="nav-icon fas fa-th"></i>
                   <p>
                     Calendario

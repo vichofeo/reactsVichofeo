@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 
-//var Appjs = require('./src/App');
+
 
 
 var express = require("express");
@@ -12,8 +12,7 @@ var bodyParser = require("body-parser");
 
 var webpack = require("webpack");
 var webPMiddleware = require("webpack-dev-middleware");
-var wconfig = require("./webpack.config");
-var compiler = webpack(wconfig);
+
 
 //mongosse
 const mongoose = require("mongoose");
@@ -57,64 +56,19 @@ app.use("/public", express.static( `${__dirname  }/public`));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
-/* 
-if (process.env.NODE_ENV !== 'production') {
-app.use(
-  webPMiddleware(compiler, {
-    publicPath: wconfig.output.publicPath,
-  })
-);
-}
-*/
+
 //virtual host
+app.use(vhost('api.ddgmalto.io', api));
 app.use(vhost('api.*', api))
-app.use(vhost('ia.io', api));
-/*
-//ruteos
-app.get('/*',(req, res)=>{
-  
-  const appj = ReactDOMServer.renderToString(<Appjs />);
+app.use(vhost('api.gamea', api));
 
-  const indexFile = path.resolve('./dist/index.html')
-
-  fs.readFile(indexFile, 'utf-8', (err, data)=>{
-    if(err){
-      console.error("error mientras se leia archivo APPJS", err)
-      return res.status(500).send('oppssss, no hay nada, intentelo mas tarde')
-    }
-
-    return res.send(
-      data.replace('<div id="root"></div>', `<div id="root">${appj}</div>`)
-    )
-  })
-})
-app.use(express.static('./dist'))
-*/
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-/*
-//servidor en https
-var fs = require('fs')
-var https= require('https')
-var http= require('http')
 
-https.createServer({
-  key: fs.readFileSync('./key.pem'),
-  cert: fs.readFileSync('./cert.pem'),
-  passphrase: 'vichofeo'  
-}, app ).listen(443, ()=>{
-  console.log("escuchando por el puero 443")
-})
 
-http.createServer(function(req,res){
-  res.writeHead(301, {"Location": `https://${  req.headers['host']  }${req.url}`})
-  res.end()
-}).listen(80)
-*/
-
-app.listen(8080, function () {
-  console.log("servidro node escuchando por el pueto 8080");
+app.listen(80, function () {
+  console.log("servidro node escuchando por el pueto 80");
 });
  

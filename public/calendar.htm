@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE 3 | Calendar</title>
+
+    <!-- Google Font: Source Sans Pro -->
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <!-- fullCalendar -->
+    <link rel="stylesheet" href="plugins/fullcalendar/main.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css" />
+  </head>
+  <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <!-- Navbar -->
+    <a href="/">
+      <img class="contacts-list-img" src="dist/img/AdminLTELogo.png" alt="User Avatar">
+
+      <div class="contacts-list-info">
+        <span class="contacts-list-name">
+          Volver Pagina Principal
+          
+        </span>
+        <span class="contacts-list-msg">Using by Vichofeo 76250675</span>
+      </div>
+      <!-- /.contacts-list-info -->
+    </a>
+    <div id="calendar" ></div>
+
+    <!-- /.control-sidebar -->
+
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+
+    <!-- jQuery UI -->
+
+    <!-- AdminLTE App -->
+
+    <!-- fullCalendar 2.2.5 -->
+
+    <script src="../plugins/fullcalendar/main.js"></script>
+    <!-- AdminLTE for demo purposes -->
+
+    <!-- Page specific script -->
+    <script>
+      const parserfecha = (fecha, tipo) => {
+        let aux = fecha.split("-");
+        return tipo ===1 ? parseInt(aux[tipo]) -1: parseInt(aux[tipo]);
+        
+      };
+      const parserhora = (hora, tipo) => {
+        let aux = hora.split(":");
+        return parseInt(aux[tipo]);
+      };
+      $(function () {
+        let colores = [
+          "#f56954",
+          "#f39c12",
+          "#0073b7",
+          "#00c0ef",
+          "#00a65a",
+          "#3c8dbc",
+          "#d004ce",
+          "#eaf209",
+          "#e81200",
+          "#3409f2",
+          "#05f0fe",
+          "#f69547",
+          "#f647b2",
+          "#f97964",
+          "#f9d464",
+          "#b864f9",
+          "#f8da4d",
+          "#818cfb",
+        ];
+        $.ajax({
+          url: "http://api.ddgmalto.io/viewAuto", // dirección solicitada
+          type: "GET",
+          dataType: "json", // Tipo de solicitud GET / POST
+          headers: {
+            "X-Requested-With": XMLHttpRequest,
+            charset: "UTF-8",
+          },
+          success: function (result) {
+            //console.log(result.body)
+            datos = result.body.datos;
+console.log(datos)
+            /* initialize the calendar
+
+           -----------------------------------------------------------------*/
+            //Date for the calendar events (dummy data)
+            var date = new Date();
+            var d = date.getDate(),
+              m = date.getMonth(),
+              y = date.getFullYear();
+
+            var Calendar = FullCalendar.Calendar;
+            var calendarEl = document.getElementById("calendar");
+
+            // initialize the external events
+            // -----------------------------------------------------------------
+            let newDat = [];
+            let index = 0;
+            let ic = 0;
+            for (const i in datos) {
+              for (const j in datos[i]) {
+                var mf = datos[i][j].fecha;
+                var mhi = datos[i][j].inicio;
+                var mhf = datos[i][j].final;
+                newDat[index] = {
+                  title: //m + mf + " " + mhi + ":" + mhf,
+                    datos[i][j].escenario + " - " + datos[i][j].organizacion,
+                  start: new Date(
+                    parserfecha(mf, 0),
+                    parserfecha(mf, 1),
+                    parserfecha(mf, 2),
+                    parserhora(mhi, 0),
+                    parserhora(mhi, 1)
+                  ),
+                  end: new Date(
+                    parserfecha(mf, 0),
+                    parserfecha(mf, 1),
+                    parserfecha(mf, 2),
+                    parserhora(mhf, 0),
+                    parserhora(mhf, 1)
+                  ),
+                  allDay: false,
+                  backgroundColor: colores[ic],
+                  borderColor: colores[ic],
+                };
+                index++;
+                ic = ic < colores.length ? ic + 1 : 0;
+              }
+            }
+            
+
+            console.log(newDat)
+            var calendar = new Calendar(calendarEl, {
+              navLinks: true,
+              weekNumbers: true,
+              fixedWeekCount:false,
+              showNonCurrentDates:false,
+              firstDay:1,
+              locale: "es",
+              headerToolbar: {
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+              },
+              buttonText: {
+                today: "Hoy",
+                month: "Mes",
+                week: "Semana",
+                day: "dia",
+                list: "Agenda",
+              },
+              themeSystem: "bootstrap",
+              //Random default events
+              events: newDat,
+              editable: false,
+              droppable: false, // this allows things to be dropped onto the calendar !!!
+            });
+            //calendar.scrollToTime( 10 )
+            calendar.render();
+          },
+          error: function (error) {
+            console.log("error", error);
+          },
+        });
+
+        // $('#calendar').fullCalendar()
+      });
+    </script>
+  </body>
+</html>

@@ -30,20 +30,15 @@
     "web-vitals": "^2.1.3"
   },
   "scripts": {
-	  "start": "craco start",
+	"start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "server": "nodemon server.js",
-    "startReact": "react-scripts start",
-    "test1": "react-scripts build",
-    "eject1": "react-scripts eject",
-	"start1": "nodemon --exec   babel-node server.js && craco start  ",
-    "starto": "npm run build && npm run start_windows",
-    "dev1": "nodemon server.js",
-    "build1": "webpack",
-    "start_linux": "NODE_ENV=production&&node cluster.js",
-    "start_windows": "set NODE_ENV=production&&nodemon --exec   babel-node server.js"
+    "server": "node server.js",
+    "serverReact": "serve -s build",
+	"dev:build-server": "set NODE_ENV=production webpack --config webpack.config.js --mode=production -w",
+    "dev:start": "nodemon ./server-build/bundle.js",
+    "dev": "npm-run-all --parallel server serverReact"
   },
   "eslintConfig": {
     "extends": [
