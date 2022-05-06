@@ -7,8 +7,10 @@ import {
   Text,
   View,
   Image,
-  StyleSheet,
+  StyleSheet,Font
 } from "@react-pdf/renderer";
+
+
 
 const fechaActual = (fechaYMD = null) => {
   var meses = new Array(
@@ -48,8 +50,32 @@ const fechaActual = (fechaYMD = null) => {
 };
 
 const DocuPDF = ({ datos, servicios, org }) => {
-  datos.organizacion = org;
+  datos.organizacion = org ? org : "-Sin Dato-";
   
+  // Register font
+  Font.register({
+    family: 'NoticiaText',
+    fonts: [
+      {
+        src: `/fonts/NoticiaText-Regular.ttf`
+      },
+      {
+        src: `/fonts/NoticiaText-Bold.ttf`,
+        fontWeight: 'bold'
+      },
+      {
+        src: `/fonts/v-Italic.ttf`,
+        fontWeight: 'normal',
+        fontStyle: 'italic'
+      },
+      {
+        src: `/fonts/NoticiaText-BoldItalic.ttf`,
+        fontWeight: 'bold',
+        fontStyle: 'italic'
+      }
+    ]
+  })
+
   const stylesLeft = StyleSheet.create({
     imageLeft: {
       position: "absolute",
@@ -154,7 +180,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
 
           backgroundColor: "white",
 
-          fontFamily: "Helvetica",
+          fontFamily: "NoticiaText",
           fontSize: 8,
           paddingTop: 30,
           paddingLeft: 30,
@@ -202,14 +228,19 @@ const DocuPDF = ({ datos, servicios, org }) => {
         {/** tabla de datos iniciales */}
         <View style={styles.table}>
           <View style={styles.tableRow}>
-            <View style={{ ...styles.tableColHeader, width: "30%" }}>
+            <View style={{ ...styles.tableColHeader, width: "35%" }}>
               <Text style={styles.tableCellHeader}>
                 NOMBRE PERSONA / RESPONSABLE:
               </Text>
             </View>
-            <View style={{ ...styles.tableCol1Header, width: "70%" }}>
+            <View style={{ ...styles.tableCol1Header, width: "50%" }}>
               <Text style={styles.tableCellHeader}>
                 JEFE DE UNIDAD DE INFRAESTRUCTURA
+              </Text>
+            </View>
+            <View style={{ ...styles.tableCol1Header, width: "15%" }}>
+              <Text style={styles.tableCellHeader}>
+                COD: {datos.codigo}
               </Text>
             </View>
           </View>
@@ -225,8 +256,8 @@ const DocuPDF = ({ datos, servicios, org }) => {
             </View>
             <View style={styles.tableCol1}>
               <Text style={styles.tableCell}>
-                SECTOR: {datos.sectors[datos.sector].label} (
-                {datos.label_rsector.label})
+                SECTOR: {datos.nsector} (
+                {datos.ntrsector})
               </Text>
             </View>
           </View>
@@ -247,12 +278,12 @@ const DocuPDF = ({ datos, servicios, org }) => {
           <View style={styles.tableRow}>
             <View style={styles.tableCol1}>
               <Text style={styles.tableCell}>
-                {datos.escenarios[datos.escenario].label}
+                {datos.nescenario}
               </Text>
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>
-                {datos.label_rescenario.label}
+                {datos.ntrescenario}
               </Text>
             </View>
           </View>
@@ -276,7 +307,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
               </Text>
             </View>
           </View>
-          {/* TABLA DE DATOS  */}
+          {/**  TABLA DE DATOS  */}
 
           <View style={styles.table}>
             <View style={styles.tableRow}>
@@ -363,7 +394,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
               let myw = index ? "10%" : "40%";
 
               return (
-                <View style={{ ...styles.tableColHeader, width: myw }}>
+                <View style={{ ...styles.tableColHeader, width: myw }} key={uuid()}>
                   <Text style={styles.tableCellHeader}>{i}</Text>
                 </View>
               );
@@ -373,7 +404,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
           {datos.segmentos.map((i)=> {
             if (i) {
               return (
-                <View style={styles.tableRow}>
+                <View style={styles.tableRow} key={uuid()}>
                   <View style={{ ...styles.tableCol, width: "40%" }}>
                     <Text style={styles.tableCell}>
                       {i.label.toUpperCase()}

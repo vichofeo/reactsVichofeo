@@ -1,6 +1,8 @@
+var genPass = require( "./genCode")
 var autorizacionModel = require("../models/mAutorizacionModel");
 var sectorModel = require("../models/mSectorModel");
 var escenarioModel = require("../models/mEscenarioModel");
+
 var moment = require("node-moment");
 
 var mongoose = require("mongoose");
@@ -28,6 +30,7 @@ const addAutorzacion = async (req, res, err) => {
       servicios: req.body.servicios,
       segmentos: req.body.segmentos,
       costo_final: req.body.costo_total,
+      codigo: req.body.codigo
     });
 
     newRegistro = await newRegistro.save();
@@ -234,10 +237,10 @@ const searchByFechaRangoHora = async (req, res, err) => {
       }
     );
     let lok = true;
-    let mensaje = "Fecha Libre, puede agregar";
+    let mensaje = "Fecha-hora Libre, puede agregar";
     if (ocupados.length > 0) {
       lok = false;
-      mensaje = "Usted no puede agregar estos datos. Vuelva a intentarlo";
+      mensaje = "Usted no puede agregar estos datos, existe Reservacion: Vuelva a intentarlo";
     }
 
     res.send({
@@ -436,6 +439,45 @@ const viewProgramacion = async (req, res, err) => {
   }
 };
 
+const genCod = async (req, res, err) => {
+  try {
+    let sw=0
+    let cod, datos;
+while (sw===0) {
+   cod = genPass()
+  datos = await autorizacionModel.find(
+      {codigo: cod},
+      { codigo: 1, _id: 0 }
+    );
+
+    if(datos.length >0 )
+    sw=0;
+    else sw=1
+}
+    res.send({ ok: true, body: {cod: cod} });
+  } catch (error) {
+    res.send({
+      ok: false,
+      mensaje: error.mensaje || "error en la obtencion de codigos",
+    });
+  }
+};
+
+const getSearchCr = async (req, res, err) => {
+  try {
+
+    let datos = await autorizacionModel.findOne({codigo:req.params.cr});
+    if (datos.length <= 0) throw new Error("No existe el registro");
+
+    res.send({ ok: true, mensaje: "Registro Encontrado", body: datos });
+  } catch (error) {
+    res.send({
+      ok: false,
+      mensaje: error.message || "Se produjo algun desajuste con el q programo, me reuso a continuar si no lo llaman ",
+    });
+  }
+};
+
 module.exports = {
   addAutorzacion,
   searchByFechaHora,
@@ -443,4 +485,5 @@ module.exports = {
   searchByFechaRangoHora,
   viewProgramacion,
   initial,
+  genCod, getSearchCr
 };

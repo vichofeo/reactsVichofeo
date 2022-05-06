@@ -70,6 +70,8 @@ router.post('/byFecha', autorizacionController.searchByFecha)
 router.post('/byFechaHora', autorizacionController.searchByFechaHora)
 router.post('/byFechaRango', autorizacionController.searchByFechaRangoHora)
 router.post('/addAutorizacion', autorizacionController.addAutorzacion)
+router.get('/getGen', autorizacionController.genCod)
+router.get('/getSearch/:cr', autorizacionController.getSearchCr)
 
 router.get("/*", function (req, res, err) {
   res.status(400).send({ message: "Servicio invalido" });

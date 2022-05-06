@@ -2,6 +2,7 @@ var mongose = require("mongoose");
 var Schema = mongose.Schema;
 
 var autorizacion = new Schema({
+  codigo: {type: String, unique: true, index: true},
   organizacion: { type: String },
   telefono: { type: String },
   sector: { type: String },
@@ -40,6 +41,11 @@ var autorizacion = new Schema({
   ],
   costo_final: { type: Number },
   active: { type: Boolean, default: true },
+  estado: {
+    type: String,
+    enum : ['Reservado','Pagado'],
+    default: 'Reservado'
+},
 });
 
 /*

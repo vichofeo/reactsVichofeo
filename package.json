@@ -34,7 +34,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "server": "node server.js",
+    "server": "nodemon server.js",
     "serverReact": "serve -s build",
 	"dev:build-server": "set NODE_ENV=production webpack --config webpack.config.js --mode=production -w",
     "dev:start": "nodemon ./server-build/bundle.js",

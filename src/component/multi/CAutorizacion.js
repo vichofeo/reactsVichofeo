@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 
 import ModalLarge from "../ucModalLarge";
 import MYPDF from "../DocuPDFGAMEA";
+import DOCURESERVA from "../ReservaPDFGAMEA";
 import { PDFViewer } from "@react-pdf/renderer";
 
 import { AutoSuggest } from "react-autosuggestions";
@@ -13,13 +14,18 @@ export default function CAutorizacion() {
   const [autorizacion, setAutorizacion] = useState({
     organizaciones: [],
     organizacion: "",
+    buscarcr: "",
     telefono: "",
     sector: 0,
     sectors: [],
+    nsector: "-Sin Dato-",
     tipo_rsector: [{ value: -1, label: "elija un valor" }],
+    ntrsector: "-Sin Dato-",
     escenario: 0,
+    nescenario: "-Sin Dato-",
     escenarios: [],
     tipo_rescenario: [{ value: -1, label: "elija un valor" }],
+    ntrescenario: "-Sin Dato-",
     programacion: [],
     fecha: "",
     hora_inicio: "",
@@ -37,6 +43,7 @@ export default function CAutorizacion() {
     exoneracion: false,
     canje: "",
     descuentos: "",
+    codigo: "!--#",
   });
 
   const [sanitarios, setSanitarios] = useState({
@@ -49,10 +56,12 @@ export default function CAutorizacion() {
   const estados = ["BUENO", "REGULAR", "MALO", "DANIOS"];
 
   const [verPDF, setVerPDF] = useState(false);
-  
+  const [verReserva, setVerReserva] = useState(false);
 
-  const [make, setMake] = useState();
+  const [make, setMake] = useState("");
   const [segmentos, setSegmentos] = useState({ index_0: true, datos: [] });
+
+  const [datosSearch, setDatosSearch] = useState();
 
   let suma = 0;
 
@@ -91,11 +100,13 @@ export default function CAutorizacion() {
     let aux = autorizacion[`tipo_${campo}`].find(
       (item) => item.value === valor
     );
+    console.log(`radio: ${campo}, label:${aux.label}`);
 
     setAutorizacion({
       ...autorizacion,
       [campo]: valor,
       [`label_${campo}`]: aux,
+      [`nt${campo}`]: aux.label,
     });
   };
 
@@ -116,10 +127,15 @@ export default function CAutorizacion() {
       ...autorizacion,
       [campo]: valor,
       [`tipo_r${campo}`]: autorizacion[`${campo}s`][valor].tipo,
+      [`n${campo}`]: autorizacion[`${campo}s`][valor].label,
     });
     console.log("--------------------");
-    console.log(campo);
-    console.log(valor);
+    console.log(
+      `${campo}:value ${valor} , label: ${
+        autorizacion[`${campo}s`][valor].label
+      }`
+    ); //autorizacion.sectors[autorizacion.sector].label
+
     if (campo === "escenario") {
       setSegmentos({
         ...segmentos,
@@ -139,12 +155,15 @@ export default function CAutorizacion() {
         //console.log(autorizacion.escenario);
         let aux1 = autorizacion.sector;
         let aux2 = autorizacion.escenario;
+
         aux = {
           ...autorizacion,
           ...aux,
           tipo_rsector: aux.sectors[aux1]["tipo"],
           tipo_rescenario: aux.escenarios[aux2].tipo,
           programacion: [],
+          nsector: aux.sectors[aux1].label,
+          nescenario: aux.escenarios[aux2].label,
         };
         setAutorizacion(aux);
 
@@ -161,7 +180,6 @@ export default function CAutorizacion() {
   }, []);
 
   const guardarDatos = (e) => {
-    
     e.preventDefault();
     //totalizaSegmentos();
 
@@ -196,6 +214,7 @@ export default function CAutorizacion() {
         descuentos: i.descuentos,
         total: i.total,
       })),
+      codigo: autorizacion.codigo,
     };
 
     //guarda
@@ -206,7 +225,6 @@ export default function CAutorizacion() {
         window.location = "/autorizacion";
         browserHistory("/autorizacion", { replace: true });
         setVerPDF(true);
-        
       },
       (err) => {
         label.innerHTML = err.error;
@@ -351,7 +369,7 @@ export default function CAutorizacion() {
       if (index === 0) {
         mycanje = autorizacion.canje ? autorizacion.canje : 0;
         mydescuento = autorizacion.descuentos ? autorizacion.descuentos : 0;
-        myexoneracion = autorizacion.exoneracion//autorizacion.exoneracion ? "Con Exoneracion" : "";
+        myexoneracion = autorizacion.exoneracion; //autorizacion.exoneracion ? "Con Exoneracion" : "";
       }
 
       if (!autorizacion.exoneracion)
@@ -379,7 +397,70 @@ export default function CAutorizacion() {
       if (totalizado[i]) aux[i] = totalizado[i];
     }
 
-    setAutorizacion({ ...autorizacion, ctotal: mysuma, segmentos: aux });
+    //setAutorizacion({ ...autorizacion, ctotal: mysuma, segmentos: aux, codigo:codigoGen });
+    ApiUrls.invokeGET(
+      "/getGen",
+      (response) => {
+        //setCodigoGen( response.body.cod);
+        setAutorizacion({
+          ...autorizacion,
+          ctotal: mysuma,
+          segmentos: aux,
+          codigo: response.body.cod,
+        });
+      },
+      (error) => {
+        let memo = "error en la obtencion de codigo. Vuelva a intentarlo";
+      }
+    );
+  };
+
+  const searchCr = (e) => {
+    e.preventDefault();
+    let varSearch = autorizacion.buscarcr;
+    ApiUrls.invokeGET(
+      "/getSearch/" + varSearch,
+      (res) => {
+        console.log(autorizacion);
+        let tmp = res.body;
+        res.ok
+          ? setDatosSearch({
+              ...tmp,
+              nsector: tmp.sector,
+              ntrsector: tmp.tsector,
+              nescenario: tmp.escenario,
+              ntrescenario: tmp.tescenario,
+              segmentos: tmp.segmentos.map((i) => ({
+                adicional_id: i.adicional_id,
+                label: i.segmento,
+                valor_hora: i.valor_hora,
+                thoras: i.total_horas,
+                canje: i.canje,
+                exoneracion: i.exoneracion,
+                descuentos: i.descuentos,
+                total: i.total,
+              })),
+              programacion: tmp.programacion.map((i) => ({
+                fecha: i.fecha.substring(0, 10),
+                hora_inicio: i.hora_inicio.substring(11, 16),
+                hora_fin: i.hora_fin.substring(11, 16),
+                duracion: i.duracion,
+              })),
+            })
+          : setDatosSearch();
+
+        //totalizaSegmentos();
+        setVerPDF(!verPDF);
+        setVerReserva(false);
+      },
+      (error) => {
+        //setLuchador({ ...luchador, lok: false });
+        //label.innerHTML = error.mensaje;
+        //label.className = "right badge badge-danger";
+      }
+    );
+
+    //suma todas las horas
   };
   return (
     <section className="content">
@@ -391,6 +472,29 @@ export default function CAutorizacion() {
                 <h3 className="card-title">
                   DDEA GAMEA <small>autorizacion deportivos</small>
                 </h3>
+                <div className="card-tools">
+                  <div className="input-group input-group-sm">
+                    <input
+                      className="form-control form-control-sm"
+                      type="search"
+                      placeholder="Buscar por CR"
+                      aria-label="Search"
+                      onChange={handleInput}
+                      name="buscarcr"
+                      id="buscarcr"
+                    />
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-info btn-flat"
+                        data-toggle="modal"
+                        data-target="#modal-xl"
+                        onClick={searchCr}
+                      >
+                        <i className="fas fa-fw fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <form id="quickForm">
@@ -425,23 +529,6 @@ export default function CAutorizacion() {
                             },
                           }}
                         />
-                        {/* 
-                        <label htmlFor="organizacionLabel">
-                          Nombre organizacion
-                        </label>
-                        <Hint options={hintData} allowTabFill>
-                          <input
-                            type="text"
-                            value={autorizacion.organizacion}
-                            placeholder="Nombre organizacion"
-                            name="organizacion"
-                            className="form-control input-with-hint "
-                            id="organizacion"
-                            onChange={handleInput}
-                            autocomplete="off"
-                          />
-                        </Hint>
-                      */}
                       </div>
                     </div>
                     <div className="col-md-4 col-sm-6">
@@ -484,7 +571,7 @@ export default function CAutorizacion() {
                     <div className="col-md-5 col-sm-6">
                       <div className="form-group" key={uuid()}>
                         {autorizacion.tipo_rsector.map((i, index) => (
-                          <div className="form-check form-check-inline">
+                          <div className="form-check form-check-inline" key={uuid()}>
                             <input
                               className="form-check-input"
                               type="radio"
@@ -524,7 +611,7 @@ export default function CAutorizacion() {
                     <div className="col-md-5 col-sm-6">
                       <div className="form-group" key={uuid()}>
                         {autorizacion.tipo_rescenario.map((i, index) => (
-                          <div className="form-check form-check-inline">
+                          <div className="form-check form-check-inline" key={uuid()}>
                             <input
                               className="form-check-input"
                               type="radio"
@@ -613,7 +700,7 @@ export default function CAutorizacion() {
                           id="memoFfin"
                           htmlFor="nFfin"
                         ></label>
-                        
+
                         <label
                           ref={labelPAdd}
                           id="memoFAdd"
@@ -638,7 +725,7 @@ export default function CAutorizacion() {
                           </thead>
                           <tbody>
                             {autorizacion.programacion.map((i, index) => (
-                              <tr>
+                              <tr key={uuid()}>
                                 <td>{i.fecha}</td>
                                 <td>{i.hora_inicio}</td>
                                 <td>{i.hora_fin}</td>
@@ -775,7 +862,7 @@ export default function CAutorizacion() {
 
                             suma += total;
                             return (
-                              <tr>
+                              <tr key={uuid()}>
                                 <td>
                                   <input
                                     type="checkbox"
@@ -830,7 +917,7 @@ export default function CAutorizacion() {
                         <tr>
                           {Object.entries(sanitarios).map(
                             ([columnId, column], index) => (
-                              <th>{columnId}</th>
+                              <th key={uuid()}>{columnId}</th>
                             )
                           )}
                         </tr>
@@ -839,10 +926,10 @@ export default function CAutorizacion() {
                         <tr>
                           {Object.entries(sanitarios).map(
                             ([columnId, column], index) => (
-                              <td>
-                                <div className="form-group" key={uuid()}>
+                              <td key={uuid()}>
+                                <div className="form-group" >
                                   {estados.map((i, index) => (
-                                    <div className="form-check">
+                                    <div className="form-check" key={uuid()}>
                                       <input
                                         className="form-check-input"
                                         type="radio"
@@ -873,30 +960,58 @@ export default function CAutorizacion() {
                     className="btn btn-warning"
                     data-toggle="modal"
                     data-target="#modal-xl"
-                    onClick={() => {                                            
+                    onClick={() => {
                       totalizaSegmentos();
-                      setVerPDF(!verPDF); 
+                      setVerPDF(!verPDF);
+                      setVerReserva(false);
+                      //setDatosSearch(false)
                     }}
                   >
                     PreVisualizar
                   </button>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    data-toggle="modal"
+                    data-target="#modal-xl"
+                    onClick={() => {
+                      totalizaSegmentos();
+                      setVerPDF(!verPDF);
+                      setVerReserva(true);
+                      //setDatosSearch(false)
+                    }}
+                  >
+                    Reservar
+                  </button>
                   <ModalLarge
                     nameModal="modal-xl"
                     tituloModal="PreVisualizacion"
-                    swFlag = {verPDF}
+                    swFlag={verPDF}
                     bsave={guardarDatos}
-                    bverpdf={()=>setVerPDF(false)}
+                    bverpdf={() => setVerPDF(false)}
                   >
                     <div style={{ minHeight: "100%" }} key={uuid()}>
                       {verPDF ? (
-                        <PDFViewer style={{ width: "100%", height: "90vh" }} >
-                          <MYPDF datos={autorizacion} servicios={sanitarios} org={make} />
+                        <PDFViewer style={{ width: "100%", height: "90vh" }}>
+                          {verReserva ? (
+                            <DOCURESERVA
+                              datos={autorizacion}
+                              servicios={sanitarios}
+                              org={make}
+                            />
+                          ) : (
+                            <MYPDF
+                              datos={datosSearch ? datosSearch : autorizacion}
+                              servicios={sanitarios}
+                              org={
+                                datosSearch ? datosSearch.organizacion : make
+                              }
+                            />
+                          )}
                         </PDFViewer>
                       ) : null}
                     </div>
                   </ModalLarge>
-
-                  
 
                   <label
                     ref={labelGuardar}
