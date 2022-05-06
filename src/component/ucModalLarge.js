@@ -1,6 +1,6 @@
 
 import { v4 as uuid } from "uuid";
-const ModalLarge = ({children, nameModal, tituloModal, swFlag, bsave, bverpdf}) => {
+const ModalLarge = ({children, nameModal, tituloModal, swFlag, bsave, bverpdf, estado, bdel}) => {
   
 
   
@@ -15,15 +15,27 @@ const ModalLarge = ({children, nameModal, tituloModal, swFlag, bsave, bverpdf}) 
         <div className="modal-content" >
           <div className="modal-header">
             <h4 className="modal-title">{tituloModal}</h4>
-            <button
+            {estado==='Pagado'? null: <button
             type="submit"
             className="btn btn-primary"
             onClick={bsave}
             data-toggle="modal"
             data-target="#modal-xl"
           >
-            Guardar Informacion
-          </button>
+            Guardar Informacion 
+          </button>}
+            
+
+          {estado==='Reservado' ? <button
+          type="submit"
+          className="btn btn-danger"
+          onClick={bdel}
+          data-toggle="modal"
+          data-target="#modal-xl"
+        >
+          Eliminar Reserva 
+        </button>: null}
+
             <button
               type="button"
               className="close"
@@ -37,15 +49,16 @@ const ModalLarge = ({children, nameModal, tituloModal, swFlag, bsave, bverpdf}) 
 
           <div className="modal-body">{children}</div>
           <div className="modal-footer justify-content-between">
-          <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={bsave}
-          data-toggle="modal"
-          data-target="#modal-xl"
-        >
-          Guardar Informacion
-        </button></div>
+          {estado==='Pagado'? null: <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={bsave}
+            data-toggle="modal"
+            data-target="#modal-xl"
+          >
+            Guardar Informacion 
+          </button>}
+        </div>
         </div>
       </div>
     </article>

@@ -64,7 +64,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
         fontWeight: 'bold'
       },
       {
-        src: `/fonts/v-Italic.ttf`,
+        src: `/fonts/NoticiaText-Italic.ttf`,
         fontWeight: 'normal',
         fontStyle: 'italic'
       },
@@ -96,6 +96,14 @@ const DocuPDF = ({ datos, servicios, org }) => {
       height: "80px",
       top: -18,
       right: 0,
+    },
+    imageRepris: {
+      position: "absolute",
+      
+      display: "block",
+      width: "90%",
+      top: 10,
+      left: 10,
     },
   });
   const BORDER_COLOR = "#bfbfbf";
@@ -156,7 +164,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
     tableCellHeader: {
       margin: 3,
 
-      fontWeight: 500,
+      fontWeight: "bold",
     },
     tableCell: {
       margin: 2,
@@ -196,11 +204,12 @@ const DocuPDF = ({ datos, servicios, org }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "white",
+            
           }}
         >
           <Image src="/images/logogamea.jpg" style={stylesLeft.imageLeft} />
           <Image src="/images/escudogamea.jpg" style={stylesLeft.imageRigth} />
+          {datos.estado === 'Pagado' ? <Image src="/images/repris.png" style={stylesLeft.imageRepris} />: null}
           <Text style={{ color: "#3388af", fontSize: "14px" }}>
             DIRECCION DE DEPORTES GAMEA
           </Text>
@@ -215,7 +224,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
           <Text
             style={{
               color: "gray",
-              fontStyle: "italic",
+              fontStyle: 'italic',
               fontSize: "8px",
             }}
           >
@@ -295,13 +304,13 @@ const DocuPDF = ({ datos, servicios, org }) => {
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>FECHA DE RESERVA:</Text>
             </View>
-            <View style={styles.tableColHeader}>
+            <View style={{...styles.tableColHeader, width: "25%"}}>
               <Text style={styles.tableCellHeader}>{fechaActual()}</Text>
             </View>
             <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>FECHA DE UTILIZACION</Text>
+              <Text style={styles.tableCellHeader}>FECHA DE UTILIZACION: </Text>
             </View>
-            <View style={styles.tableColHeader}>
+            <View style={{...styles.tableColHeader, width: "25%"}}>
               <Text style={styles.tableCellHeader}>
                 {fechaActual(datos.programacion[0]?.fecha)}
               </Text>
@@ -373,7 +382,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
             display: "flex",
             flexDirection: "column",
 
-            backgroundColor: "white",
+            
           }}
         >
           <Text
@@ -492,13 +501,13 @@ const DocuPDF = ({ datos, servicios, org }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "white",
+            
           }}
         >
           <Text
             style={{
               color: "gray",
-              fontStyle: "italic",
+              fontStyle: 'italic',
               fontSize: "8px",
             }}
           >
@@ -532,7 +541,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
           <View
             style={{
               color: "gray",
-              fontStyle: "italic",
+              fontStyle: 'italic',
               fontSize: "7px",
               textAlign: "justify",
             }}
@@ -737,7 +746,7 @@ const DocuPDF = ({ datos, servicios, org }) => {
           style={{
             ...styles.tableRow,
             color: "gray",
-            fontStyle: "italic",
+            fontStyle: 'italic',
             fontSize: "7px",
             textAlign: "left",
           }}

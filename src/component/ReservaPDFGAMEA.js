@@ -62,7 +62,7 @@ const DocuReservaPDF = ({ datos, servicios, org }) => {
         fontWeight: 'bold'
       },
       {
-        src: `/fonts/v-Italic.ttf`,
+        src: `/fonts/NoticiaText-Italic.ttf`,
         fontWeight: 'normal',
         fontStyle: 'italic'
       },
@@ -157,7 +157,7 @@ const DocuReservaPDF = ({ datos, servicios, org }) => {
     tableCellHeader: {
       margin: 3,
 
-      fontWeight: 500,
+      fontWeight: "bold",
     },
     tableCell: {
       margin: 2,
@@ -218,7 +218,7 @@ const DocuReservaPDF = ({ datos, servicios, org }) => {
           }}
         >
           <Text>El Alto, {fechaActual()}</Text>
-          <Text>CITE: .....</Text>
+          <Text>CITE: {datos.cite}</Text>
           <Text style={{textDecoration: 'underline', fontWeight:'bold'}}>CR: {datos.codigo}</Text>
         </View>
         {/** formalidad carta */}
@@ -233,7 +233,7 @@ const DocuReservaPDF = ({ datos, servicios, org }) => {
           }}
         >
           <Text style={{fontWeight:'bold'}}>Senor:</Text>
-          <Text>reservador</Text>
+          <Text>{datos.persona}</Text>
           <Text style={{fontWeight:'bold'}}>{datos.organizacion}</Text>
           <Text>Presente.-</Text>
           <Text> </Text>

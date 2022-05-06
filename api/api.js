@@ -72,6 +72,8 @@ router.post('/byFechaRango', autorizacionController.searchByFechaRangoHora)
 router.post('/addAutorizacion', autorizacionController.addAutorzacion)
 router.get('/getGen', autorizacionController.genCod)
 router.get('/getSearch/:cr', autorizacionController.getSearchCr)
+router.put('/refreshFile', autorizacionController.updateAutorizacion)
+router.delete('/deathRes/:cr', autorizacionController.delReserva)
 
 router.get("/*", function (req, res, err) {
   res.status(400).send({ message: "Servicio invalido" });

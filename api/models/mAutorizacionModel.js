@@ -3,6 +3,8 @@ var Schema = mongose.Schema;
 
 var autorizacion = new Schema({
   codigo: {type: String, unique: true, index: true},
+  persona: { type: String },
+  cite: { type: String },
   organizacion: { type: String },
   telefono: { type: String },
   sector: { type: String },
@@ -11,7 +13,7 @@ var autorizacion = new Schema({
   escenario: { type: String },
   tescenario: { type: String },
   fecha_reserva: { type: Date, default: Date.now },
-  fechas_utilizacion: [{ type: Date }],
+  
   programacion: [
     {
       fecha: { type: Date },
@@ -39,7 +41,9 @@ var autorizacion = new Schema({
       total: { type: Number },
     },
   ],
-  costo_final: { type: Number },
+  costo_total: { type: Number },
+  fstart: { type: Date },
+  fend: { type: Date },
   active: { type: Boolean, default: true },
   estado: {
     type: String,

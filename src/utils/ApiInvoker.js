@@ -19,6 +19,13 @@ class APIInvoker {
     this.invoke(url, okCallback, failCallback, params)
   }
 
+  invokeDEL(url, okCallback, failCallback) {
+    let params = {
+      method: 'delete',
+      headers: this.getAPIHeader(),
+    }
+    this.invoke(url, okCallback, failCallback, params)
+  }
   invokePUT(url, body, okCallback, failCallback) {
     let params = {
       method: 'put',

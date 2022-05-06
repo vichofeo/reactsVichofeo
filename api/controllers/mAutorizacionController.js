@@ -10,6 +10,9 @@ var mongoose = require("mongoose");
 const addAutorzacion = async (req, res, err) => {
   try {
     let newRegistro = new autorizacionModel({
+      codigo: req.body.codigo,
+      persona: req.body.persona,
+      cite: req.body.cite,
       organizacion: req.body.organizacion,
       telefono: req.body.telefono,
       sector: req.body.sector,
@@ -29,8 +32,11 @@ const addAutorzacion = async (req, res, err) => {
       observaciones: req.body.observaciones,
       servicios: req.body.servicios,
       segmentos: req.body.segmentos,
-      costo_final: req.body.costo_total,
-      codigo: req.body.codigo
+      costo_total: req.body.costo_total,
+      fstart: req.body.fstart,
+      fend: req.body.fend,
+      estado: req.body.estado,
+      
     });
 
     newRegistro = await newRegistro.save();
@@ -478,6 +484,42 @@ const getSearchCr = async (req, res, err) => {
   }
 };
 
+const updateAutorizacion = async (req, res, err) => {
+  let codigo = req.body.codigo
+  
+  try {
+    const update = {
+      estado: "Pagado"
+    }
+    let response = await autorizacionModel.updateOne({ codigo: codigo }, update)
+
+    res.send({
+      ok: true,
+    })
+  } catch (error) {
+    res.send({
+      ok: false,
+      message: error.message || 'Error al actulizar estado de autorizacion',
+    })
+  }
+}
+const delReserva = async (req, res, err) => {
+  
+  
+  try {
+  
+    await autorizacionModel.remove({ codigo: req.params.cr })
+
+    res.send({
+      ok: true,
+    })
+  } catch (error) {
+    res.send({
+      ok: false,
+      message: error.message || 'Error al querer eliminar reserva',
+    })
+  }
+}
 module.exports = {
   addAutorzacion,
   searchByFechaHora,
@@ -485,5 +527,7 @@ module.exports = {
   searchByFechaRangoHora,
   viewProgramacion,
   initial,
-  genCod, getSearchCr
+  genCod, getSearchCr,
+  updateAutorizacion,
+  delReserva
 };

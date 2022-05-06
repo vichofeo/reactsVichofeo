@@ -13,7 +13,10 @@ import { AutoSuggest } from "react-autosuggestions";
 export default function CAutorizacion() {
   const [autorizacion, setAutorizacion] = useState({
     organizaciones: [],
+    codigo: "!--#",
     organizacion: "",
+    persona: null,
+    cite: "/DD/UI/AU/",
     buscarcr: "",
     telefono: "",
     sector: 0,
@@ -36,14 +39,15 @@ export default function CAutorizacion() {
     label_rsector: [{ value: -1, label: "debe de elegir un sector" }],
     descripcion_actividad: "",
     observaciones:
-      "LA SOLICITUD DE DEL ESCENARIO DEPORTIVO, NO INCLUYE LOS SERVICIOS BASICOS",
+      "LA SOLICITUD DEL ESCENARIO DEPORTIVO, NO INCLUYE LOS SERVICIOS BASICOS",
     thoras: 0,
     ctotal: 0,
     segmentos: [],
     exoneracion: false,
     canje: "",
     descuentos: "",
-    codigo: "!--#",
+
+    estado: false,
   });
 
   const [sanitarios, setSanitarios] = useState({
@@ -186,50 +190,81 @@ export default function CAutorizacion() {
     const label = labelGuardar.current;
 
     label.innerHTML = "";
+    if (datosSearch) {
+      //actualizacion
+      
+      let request = {
+        codigo: datosSearch.codigo,
+      };
+      ApiUrls.invokePUT(
+        "/refreshFile",
+        request,
+        (response) => {
+          if (response.ok) {
+            window.location = "/autorizacion";
+            browserHistory("/autorizacion", { replace: true });
+            setVerPDF(true);
+          }
+        },
+        (err) => {
+          console.error("error al actualizar perfil");
+        }
+      );
+    } else {
+      //insercion
+      //estructura de datos
+      let request = {
+        codigo: autorizacion.codigo,
+        organizacion: make, //autorizacion.organizacion,
+        persona: autorizacion.persona,
+        cite: autorizacion.cite,
+        telefono: autorizacion.telefono,
+        sector: autorizacion.sectors[autorizacion.sector].label,
+        tsector: autorizacion.label_rsector.label,
+        escenario_id: autorizacion.escenarios[autorizacion.escenario].value,
+        escenario: autorizacion.escenarios[autorizacion.escenario].label,
+        tescenario: autorizacion.label_rescenario.label,
+        programacion: autorizacion.programacion,
+        descripcion_actividad: autorizacion.descripcion_actividad,
+        observaciones: autorizacion.observaciones,
+        servicios: sanitarios,
+        costo_total: autorizacion.ctotal,
+        fstart:
+          autorizacion.programacion.length > 0
+            ? autorizacion.programacion[0].fecha
+            : null,
+        fend:
+          autorizacion.programacion.length > 0
+            ? autorizacion.programacion[autorizacion.programacion.length - 1]
+                .fecha
+            : null,
+        segmentos: autorizacion.segmentos.map((i) => ({
+          adicional_id: i.value ? i.value : null,
+          segmento: i.label,
+          valor_hora: i.valor_hora,
+          total_horas: i.thoras,
+          canje: i.canje,
+          exoneracion: i.exoneracion,
+          descuentos: i.descuentos,
+          total: i.total,
+        })),
+        estado: verReserva ? "Reservado" : "Pagado",
+      };
 
-    //const MyDoc = (<MYPDF datos={autorizacion} servicios={sanitarios} />);
-    //  updateInstance({ document: MyDoc })
-    //setAutorizacion({ ...autorizacion, organizacion: make });
-    //estructura de datos
-    let request = {
-      organizacion: make, //autorizacion.organizacion,
-      telefono: autorizacion.telefono,
-      sector: autorizacion.sectors[autorizacion.sector].label,
-      tsector: autorizacion.label_rsector.label,
-      escenario_id: autorizacion.escenarios[autorizacion.escenario].value,
-      escenario: autorizacion.escenarios[autorizacion.escenario].label,
-      tescenario: autorizacion.label_rescenario.label,
-      programacion: autorizacion.programacion,
-      descripcion_actividad: autorizacion.descripcion_actividad,
-      observaciones: autorizacion.observaciones,
-      servicios: sanitarios,
-      costo_total: autorizacion.ctotal,
-      segmentos: autorizacion.segmentos.map((i) => ({
-        adicional_id: i.value ? i.value : null,
-        segmento: i.label,
-        valor_hora: i.valor_hora,
-        total_horas: i.thoras,
-        canje: i.canje,
-        exoneracion: i.exoneracion,
-        descuentos: i.descuentos,
-        total: i.total,
-      })),
-      codigo: autorizacion.codigo,
-    };
-
-    //guarda
-    ApiUrls.invokePOST(
-      "/addAutorizacion",
-      request,
-      (res) => {
-        window.location = "/autorizacion";
-        browserHistory("/autorizacion", { replace: true });
-        setVerPDF(true);
-      },
-      (err) => {
-        label.innerHTML = err.error;
-      }
-    );
+      //guarda
+      ApiUrls.invokePOST(
+        "/addAutorizacion",
+        request,
+        (res) => {
+          window.location = "/autorizacion";
+          browserHistory("/autorizacion", { replace: true });
+          setVerPDF(true);
+        },
+        (err) => {
+          label.innerHTML = err.error;
+        }
+      );
+    }
   };
 
   const addFecha = (e) => {
@@ -360,6 +395,7 @@ export default function CAutorizacion() {
   };
 
   const totalizaSegmentos = () => {
+    setDatosSearch(false);
     let mysuma = 0;
     let totalizado = segmentos.datos.map((i, index) => {
       let mycanje = 0;
@@ -430,6 +466,7 @@ export default function CAutorizacion() {
               ntrsector: tmp.tsector,
               nescenario: tmp.escenario,
               ntrescenario: tmp.tescenario,
+              ctotal: tmp.costo_total,
               segmentos: tmp.segmentos.map((i) => ({
                 adicional_id: i.adicional_id,
                 label: i.segmento,
@@ -458,10 +495,27 @@ export default function CAutorizacion() {
         //label.innerHTML = error.mensaje;
         //label.className = "right badge badge-danger";
       }
-    );
-
-    //suma todas las horas
+    );    
   };
+
+  const suprCr = (e) => {
+    e.preventDefault();
+    
+    ApiUrls.invokeDEL(
+      "/deathRes/" + datosSearch.codigo,
+      (res) => {        
+        let tmp = res.body;
+        window.location = "/autorizacion";
+            browserHistory("/autorizacion", { replace: true });
+            setVerPDF(true);
+      },
+      (error) => {
+        //setLuchador({ ...luchador, lok: false });
+        //label.innerHTML = error.mensaje;
+        //label.className = "right badge badge-danger";
+      }
+    );    
+  }
   return (
     <section className="content">
       <div className="container-fluid">
@@ -470,7 +524,7 @@ export default function CAutorizacion() {
             <div className="card card-primary">
               <div className="card-header">
                 <h3 className="card-title">
-                  DDEA GAMEA <small>autorizacion deportivos</small>
+                  DDEA GAMEA <small>UNIDAD DE INFRAESTRUCTURA </small>
                 </h3>
                 <div className="card-tools">
                   <div className="input-group input-group-sm">
@@ -500,19 +554,7 @@ export default function CAutorizacion() {
               <form id="quickForm">
                 <div className="card-body">
                   <div className="row">
-                    <div className="col-md-4 col-sm-6">
-                      {"NOMBRE: PERSONA/RESPONSABLE"}
-                    </div>
-                    <div className="col-md-4 col-sm-6">
-                      {"JEFE DE UNIDAD DE INFRAESTRUCTURA"}
-                    </div>
-                    <div className="col-md-4 col-sm-6"></div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-4 col-sm-6">
-                      {"EMPRESA/ORGANIZACION"}
-                    </div>
-                    <div className="col-md-4 col-sm-6">
+                    <div className="col-md-10 col-sm-6">
                       <div className="form-group">
                         <AutoSuggest
                           name="organizacion"
@@ -531,18 +573,52 @@ export default function CAutorizacion() {
                         />
                       </div>
                     </div>
+                  </div>
+                  <div className="row">
                     <div className="col-md-4 col-sm-6">
                       <div className="form-group">
                         <label htmlFor="telefonoLabel">
-                          Telefono Organizacion
+                          Nombre persona que reserva
                         </label>
                         <input
                           type="text"
+                          value={autorizacion.persona}
+                          placeholder="Nombre del que reserva"
+                          name="persona"
+                          className="form-control"
+                          id="persona"
+                          onChange={handleInput}
+                          autoComplete="off"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-4 col-sm-6">
+                      <div className="form-group">
+                        <label htmlFor="telefonoLabel">Telefono Contacto</label>
+                        <input
+                          type="text"
                           value={autorizacion.telefono}
-                          placeholder="Telefono organizacion"
+                          placeholder="Telefono contacto"
                           name="telefono"
                           className="form-control"
                           id="telefono"
+                          onChange={handleInput}
+                          autoComplete="off"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-4 col-sm-6">
+                      <div className="form-group">
+                        <label htmlFor="telefonoLabel">
+                          No de cite para Reserva
+                        </label>
+                        <input
+                          type="text"
+                          value={autorizacion.cite}
+                          placeholder="Cite"
+                          name="cite"
+                          className="form-control"
+                          id="cite"
                           onChange={handleInput}
                           autoComplete="off"
                         />
@@ -571,7 +647,10 @@ export default function CAutorizacion() {
                     <div className="col-md-5 col-sm-6">
                       <div className="form-group" key={uuid()}>
                         {autorizacion.tipo_rsector.map((i, index) => (
-                          <div className="form-check form-check-inline" key={uuid()}>
+                          <div
+                            className="form-check form-check-inline"
+                            key={uuid()}
+                          >
                             <input
                               className="form-check-input"
                               type="radio"
@@ -611,7 +690,10 @@ export default function CAutorizacion() {
                     <div className="col-md-5 col-sm-6">
                       <div className="form-group" key={uuid()}>
                         {autorizacion.tipo_rescenario.map((i, index) => (
-                          <div className="form-check form-check-inline" key={uuid()}>
+                          <div
+                            className="form-check form-check-inline"
+                            key={uuid()}
+                          >
                             <input
                               className="form-check-input"
                               type="radio"
@@ -927,7 +1009,7 @@ export default function CAutorizacion() {
                           {Object.entries(sanitarios).map(
                             ([columnId, column], index) => (
                               <td key={uuid()}>
-                                <div className="form-group" >
+                                <div className="form-group">
                                   {estados.map((i, index) => (
                                     <div className="form-check" key={uuid()}>
                                       <input
@@ -989,6 +1071,8 @@ export default function CAutorizacion() {
                     swFlag={verPDF}
                     bsave={guardarDatos}
                     bverpdf={() => setVerPDF(false)}
+                    estado={datosSearch ? datosSearch.estado: null}
+                    bdel={suprCr}
                   >
                     <div style={{ minHeight: "100%" }} key={uuid()}>
                       {verPDF ? (
@@ -1002,7 +1086,9 @@ export default function CAutorizacion() {
                           ) : (
                             <MYPDF
                               datos={datosSearch ? datosSearch : autorizacion}
-                              servicios={sanitarios}
+                              servicios={
+                                datosSearch ? datosSearch.servicios : sanitarios
+                              }
                               org={
                                 datosSearch ? datosSearch.organizacion : make
                               }
