@@ -16,24 +16,34 @@ export default function PageWrapper(props) {
               <i className="fas fa-bars"></i>
             </a>
           </li>
+          <li className="nav-item d-none d-sm-inline-block">
+            <a href="/autorizacion" className="nav-link">
+              Reservar/Autorizar
+            </a>
+          </li>
+          <li className="nav-item d-none d-sm-inline-block">
+            <a href="/calendar.htm" className="nav-link">
+              Calendario
+            </a>
+          </li>
         </ul>
       </nav>
 
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
-        <img
-          src="dist/img/AdminLTELogo.png"          
-          className="brand-image img-circle elevation-3"
-          style={{ opacity: 0.8 }}
-        />
-        <span className="brand-text font-weight-light">GAMEA - DDeportes</span>
-
+        <div className="brand-link">
+          <img
+            src="dist/img/AdminLTELogo.png"
+            className="brand-image img-circle elevation-3"
+            style={{ opacity: 0.8 }}
+          />
+          <span className="brand-text font-weight-light">
+            GAMEA - DDeportes
+          </span>
+        </div>
         <div className="sidebar">
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="image">
-              <img
-                src="dist/img/avatar4.png"
-                className="img-circle elevation-2"                
-              />
+              <img src="dist/img/avatar4.png" className="img-circle " />
             </div>
             <div className="info">
               <a href="#" className="d-block">
@@ -42,14 +52,13 @@ export default function PageWrapper(props) {
             </div>
           </div>
 
-         
-
           <nav className="mt-2">
-          <ul className="nav nav-pills nav-sidebar flex-column" 
-          data-widget="treeview" 
-          role="menu" 
-          data-accordion="false">
-
+            <ul
+              className="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="true"
+            >
               <li className="nav-header">Menu</li>
 
               <li className="nav-item">
@@ -144,8 +153,6 @@ export default function PageWrapper(props) {
           <div className="container-fluid">{props.children}</div>
         </section>
       </div>
-
-      
 
       <footer className="main-footer">
         <strong>Copyleft &copy; 2014-2022 vichofeoooo.</strong>

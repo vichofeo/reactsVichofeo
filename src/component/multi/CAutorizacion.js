@@ -536,6 +536,7 @@ export default function CAutorizacion() {
                       onChange={handleInput}
                       name="buscarcr"
                       id="buscarcr"
+                      autoComplete="off"
                     />
                     <div className="input-group-append">
                       <button

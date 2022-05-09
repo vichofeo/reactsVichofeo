@@ -247,6 +247,49 @@ const searchByFechaRangoHora = async (req, res, err) => {
     if (ocupados.length > 0) {
       lok = false;
       mensaje = "Usted no puede agregar estos datos, existe Reservacion: Vuelva a intentarlo";
+    }else{
+      //verifica si el rango de fechas es igual a alguno almacenado
+      ocupados = await autorizacionModel.find(
+        {
+          $and: [
+            { escenario_id: escenario },
+  
+            {
+              programacion: {
+                $elemMatch: {
+                  $or: [
+                    {
+                      $and: [
+                        { hora_inicio: { $lte: new Date(fechaEnd) } },
+                        { hora_fin: { $gte: new Date(fechaEnd) } },
+                        { hora_inicio: { $lte: new Date(fechaIn) } },
+                        { hora_fin: { $gte: new Date(fechaIn) } },
+                      ],
+                    },
+                    
+                    {
+                      $and: [
+                        { hora_inicio: { $lte: new Date(fechaEnd) } },
+                        { hora_inicio: { $gte: new Date(fechaIn) } },
+                        { hora_fin: { $lte: new Date(fechaEnd) } },
+                        { hora_fin: { $gte: new Date(fechaIn) } },
+                      ],
+                    },
+                    
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        {
+          escenario: 1,
+        }
+      )
+      if (ocupados.length > 0) {
+        lok = false;
+        mensaje = `Rango de horas Solicitados ocupado`;
+      }
     }
 
     res.send({

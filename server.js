@@ -1,5 +1,5 @@
-var React = require('react');
-var ReactDOMServer = require('react-dom/server');
+//var React = require('react');
+//var ReactDOMServer = require('react-dom/server');
 
 
 
@@ -10,14 +10,14 @@ var app = express();
 var bodyParser = require("body-parser");
 
 
-var webpack = require("webpack");
-var webPMiddleware = require("webpack-dev-middleware");
+//var webpack = require("webpack");
+//var webPMiddleware = require("webpack-dev-middleware");
 
 
 //mongosse
 const mongoose = require("mongoose");
-const {connect} = require("mongoose")
-var configuration = require("./src/utils/config");
+//const {connect} = require("mongoose")
+//var configuration = require("./src/utils/config");
 
 //virtual host y api
 var vhost = require('vhost')
@@ -30,7 +30,7 @@ var fs = require('fs')
 
 
 
-let connectString = configuration.mongodb.development.connectionString;
+//let connectString = configuration.mongodb.development.connectionString;
 
 
   mongoose
@@ -50,9 +50,11 @@ let connectString = configuration.mongodb.development.connectionString;
 // Access-Control-Allow-Origin: *
 app.use('*', require('cors')());
 
+//consumiendo buil del compilado react
+app.use(express.static(path.join(__dirname, 'build')))
 
 //middlewares
-app.use("/public", express.static( `${__dirname  }/public`));
+//app.use("/public", express.static( `${__dirname  }/public`));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
@@ -62,11 +64,13 @@ app.use(vhost('api.ddgmalto.io', api));
 app.use(vhost('api.*', api))
 app.use(vhost('api.gamea', api));
 
-app.get("/*", function (req, res) {
+/*app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
-
-
+*/
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  })
 
 app.listen(80, function () {
   console.log("servidro node escuchando por el pueto 80");
