@@ -338,7 +338,7 @@ const initial = async (req, res, err) => {
         };
       }),
       escenarios: escenario.map((i) => {
-        i.adicionales.unshift({_id:{_id:null, item_adicional:"Alquiler Escenario"}, valor_hora:i.valor_hora})
+        i.adicionales.unshift({_id:{_id:null, item_adicional:"Alquiler Escenario"}, valor_hora:i.valor_hora, por_hora:1})
         return {
           value: i._id,
           label: i.nombre_escenario,
@@ -353,7 +353,7 @@ const initial = async (req, res, err) => {
             value: j._id._id,
             label: j._id.item_adicional,
             valor_hora: j.valor_hora,
-            
+            ph: j.por_hora,
           })),
         };
       }),

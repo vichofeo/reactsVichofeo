@@ -15,7 +15,7 @@ export default function CAutorizacion() {
     organizaciones: [],
     codigo: "!--#",
     organizacion: "",
-    persona: null,
+    persona: "",
     cite: "/DD/UI/AU/",
     buscarcr: "",
     telefono: "",
@@ -409,7 +409,7 @@ export default function CAutorizacion() {
       }
 
       if (!autorizacion.exoneracion)
-        mytotal = i.valor_hora * autorizacion.thoras - mycanje - mydescuento;
+        mytotal = (i.valor_hora * (i.ph? autorizacion.thoras:1)) - mycanje - mydescuento;
 
       if (!segmentos[`index_${index}`]) {
         mytotal = 0;
@@ -419,7 +419,7 @@ export default function CAutorizacion() {
         mysuma += mytotal;
         return {
           ...i,
-          thoras: autorizacion.thoras,
+          thoras: i.ph? autorizacion.thoras:null,
           canje: mycanje,
           exoneracion: myexoneracion,
           descuentos: mydescuento,
@@ -936,13 +936,14 @@ export default function CAutorizacion() {
 
                             if (!autorizacion.exoneracion)
                               total =
-                                i.valor_hora * autorizacion.thoras -
+                                (i.valor_hora * (i.ph? autorizacion.thoras:1)) -
                                 mycanje -
                                 mydescuento;
 
                             //controla el checkbox
                             if (!segmentos[`index_${index}`]) total = 0;
 
+                            
                             suma += total;
                             return (
                               <tr key={uuid()}>
@@ -956,7 +957,7 @@ export default function CAutorizacion() {
                                 </td>
                                 <td>{i.label}</td>
                                 <td>{i.valor_hora}</td>
-                                <td>{autorizacion.thoras}</td>
+                                <td>{i.ph ? autorizacion.thoras:null}</td>
                                 <td>{mycanje ? mycanje : null}</td>
                                 <td>
                                   {!index && autorizacion.exoneracion

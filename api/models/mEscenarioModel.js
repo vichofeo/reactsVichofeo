@@ -15,6 +15,11 @@ var escenario = new Schema({
         default: null,
       },
       valor_hora: { type: Number },
+      por_hora: {
+        type: Number,
+        enum : [0,1],
+        default: 1
+    },
     },
   ],
   active: { type: Boolean, default: true },

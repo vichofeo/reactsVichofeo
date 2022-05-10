@@ -83,6 +83,7 @@ const updateEscenarioAdicionales = async (req, res, err) => {
       adicionales: req.body.adicionales.map((i) => ({
         _id: i._id,
         valor_hora: i.valor_hora,
+        por_hora: i.por_hora
       })),
     };
     
@@ -141,7 +142,8 @@ const viewEscenario = async (req, res, err) => {
         adicionales: i.adicionales.map((j) => ({
           value: j._id._id,
           label: j._id.item_adicional,
-          valor_hora: j.valor_hora
+          valor_hora: j.valor_hora,
+          ph:j.por_hora
         })),
       };
     });

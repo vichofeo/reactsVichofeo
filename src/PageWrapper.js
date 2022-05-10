@@ -63,7 +63,8 @@ export default function PageWrapper(props) {
 
               <li className="nav-item">
                 <a href="/calendar.htm" className="nav-link">
-                  <i className="nav-icon fas fa-th"></i>
+                  
+                  <i className="nav-icon far fa-calendar-alt "></i>
                   <p>
                     Calendario
                     <span className="right badge badge-danger">Demo</span>
@@ -72,57 +73,92 @@ export default function PageWrapper(props) {
               </li>
 
               <li className="nav-item">
-                <a href="#" className="nav-link">
+              <a href="#" className="nav-link">
+                <i className="nav-icon far fa-plus-square text-info"></i>
+                <p>
+                  Configurar
+                  <i className="fas fa-angle-left right"></i>
+                  <span className="badge badge-info right">2</span>
+                </p>
+              </a>
+              <ul className="nav nav-treeview">
+                <li className="nav-item">
+                  <a href="#" className="nav-link">
                   <i className="nav-icon fas fa-edit"></i>
-                  <p>
-                    GAMEA - Deportes CFG
-                    <i className="fas fa-angle-left right"></i>
-                    <span className="badge badge-info right">6</span>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <a href="/tipoSector" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Tipo Sector</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="/sector" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Sector</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
+                  
+                    <p>
+                      Tipo Etiquetas                                            
+                      <span className="badge badge-danger right">3</span>
+                      <i className="fas fa-angle-left right"></i>
+                      
+                    </p>
+                  </a>
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
+                      
+                      <a href="/tipoSector" className="nav-link">                     
+                        <i className="nav-icon far fa-circle text-danger"></i>
+                        <p>Tipo Sector</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
                     <a href="/espacio" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Espacios</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="/escenario" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Escenarios</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
+                      <i className="nav-icon far fa-circle text-danger"></i>
+                        <p>Tipo Espacios</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
                     <a href="/itemsAdicional" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Items Adicionales</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
+                      <i className="nav-icon far fa-circle text-danger"></i>
+                        <p>Tipo Segmento</p>
+                      </a>
+                    </li>
+                    
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <a href="#" className="nav-link">
+                    
+                    <i className="nav-icon fas fa-columns"></i>
+                    <p>
+                      Sector - Escenario
+                      <span className="badge badge-warning right">3</span>
+                      <i className="fas fa-angle-left right"></i>
+
+                    </p>
+                  </a>
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
+                    <a href="/sector" className="nav-link">
+                        
+                        <i className="nav-icon far fa-circle text-warning"></i>
+                        <p>Sectores</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                    <a href="/escenario" className="nav-link">
+                      <i className="nav-icon far fa-circle text-warning"></i>
+                        <p>Escenario</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
                     <a href="/adicionales" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Adicionales Escenario</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+                      <i className="nav-icon far fa-circle text-warning"></i>
+                        <p>Segmentos Adicionales</p>
+                      </a>
+                    </li>
+                   
+                  </ul>
+                </li>
+               
+              </ul>
+            </li>
+
+             
 
               <li className="nav-item">
                 <a href="#" className="nav-link">
-                  <i className="nav-icon fas fa-book"></i>
+                <i className="nav-icon fas fa-copy text-success"></i>
                   <p>
                     GAMEA - Autorizar
                     <i className="fas fa-angle-left right"></i>
@@ -131,13 +167,14 @@ export default function PageWrapper(props) {
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
                     <a href="/autorizacion" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
+                    <i className="nav-icon far fa-circle text-success"></i>
+                      
                       <p>Realizar Autorizacion</p>
                     </a>
                   </li>
                   <li className="nav-item">
                     <a href="/autorizacionVer" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
+                    <i className="nav-icon far fa-circle text-success"></i>
                       <p>Ver Autorizaciones</p>
                     </a>
                   </li>
