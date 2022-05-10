@@ -123,7 +123,7 @@ export default function CEspacio() {
   //************************** PAGINACION */
   const [paginaActual, setPaginaActual] = useState(1);
   //const [peliculas, setPeliculas] = useState([]);
-  const PAGINABLOQUE = 4;
+  const PAGINABLOQUE = 10;
 
   let listaespacioes = lista;
   //buscaPelicula();

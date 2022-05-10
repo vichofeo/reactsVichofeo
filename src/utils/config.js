@@ -1,7 +1,8 @@
 module.exports = {
     debugMode: true,
     api: {
-      host: 'http://api.localhost:8080',
+      host: 'http://api.ddgmalto.io',
+      //host: "http://api.localhost",
       //host: "https://minitwitterapi.reactiveprogramming.io"
     },
     server: {

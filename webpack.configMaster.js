@@ -24,7 +24,7 @@ const webpackInitConfig = {
     historyApiFallback: true
   },
   entry: 
-     [ __dirname + "/server.js"],
+     [ __dirname + "/src/index.js"],
   
   output: {
     path: `${__dirname  }/dist`, //path.join(basePath, distPath),

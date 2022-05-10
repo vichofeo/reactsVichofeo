@@ -2,8 +2,10 @@
 
 # dependencies
 /public/plugins
+//public/muss
 /public/images
 /public/dist
+/public/fonts
 /node_modules
 /.pnp
 .pnp.js

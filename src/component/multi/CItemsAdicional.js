@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 import Paginacion from "../uPaginacion";
 
-export default function CTipoSector() {
-  const [tipoSector, settipoSector] = useState({
-    nombre_tipo_sector: "",
+export default function CItemsAdicional() {
+  const [itemAdicional, setItemAdicional] = useState({
+    item_adicional: "",
   });
 
   const [lista, setLista] = useState([]);
@@ -19,12 +19,12 @@ export default function CTipoSector() {
 
   useEffect(() => {
     ApiUrls.invokeGET(
-      "/viewtipoSector",
+      "/viewItemAdicional",
       (response) => {
         setLista(response.body);
       },
       (error) => {
-        window.location = "/tipoSector";
+        window.location = "/itemsAdicional";
       }
     );
   }, []);
@@ -37,8 +37,8 @@ export default function CTipoSector() {
   const handleInput = (e) => {
     let campo = e.target.name;
     let valor = e.target.value;
-    settipoSector({
-      ...tipoSector,
+    setItemAdicional({
+      ...itemAdicional,
       [campo]: valor,
     });
   };
@@ -49,14 +49,14 @@ export default function CTipoSector() {
     let name = e.target.value;
     name = name.replaceAll(" ", "%20")
     ApiUrls.invokeGET(
-      "/validateNameTipoSector/" + name,
+      "/validateNameitemAdicional/" + name,
       (res) => {
-        settipoSector({ ...tipoSector, lok: true });
+        setItemAdicional({ ...itemAdicional, lok: true });
         label.innerHTML = res.mensaje;
         label.className = "right badge badge-success";
       },
       (error) => {
-        settipoSector({ ...tipoSector, lok: false });
+        setItemAdicional({ ...itemAdicional, lok: false });
         label.innerHTML = error.mensaje;
         label.className = "right badge badge-danger";
       }
@@ -67,49 +67,49 @@ export default function CTipoSector() {
     e.preventDefault();
     const label = labelGuardar.current;
 
-    if (!tipoSector.lok && !tipoSector._id) {
-      label.innerHTML = "no puede grabara pq ya existe un registrados";
+    if (!itemAdicional.lok && !itemAdicional._id) {
+      label.innerHTML = "no puede grabrar pq ya existe un registrados";
       return;
     }
     label.innerHTML = "";
 
     //estructura de datos
     let request = {
-      nombre_tipo_sector: tipoSector.nombre_tipo_sector,
+      item_adicional: itemAdicional.item_adicional,
     };
 
-    if (!tipoSector._id) {
+    if (!itemAdicional._id) {
       //guarda
       ApiUrls.invokePOST(
-        "/addTipoSector",
+        "/addItemAdicional",
         request,
         (res) => {
-          window.location = "/tipoSector";
-          browserHistory("/tipoSector", { replace: true });
+          window.location = "/itemsAdicional";
+          browserHistory("/itemsAdicional", { replace: true });
         },
         (err) => {
           label.innerHTML = err.mensaje;
         }
       );
     } else {
-      request = { ...request, _id:tipoSector._id };
+      request = { ...request, _id:itemAdicional._id };
       //actualiza
       ApiUrls.invokePUT(
-        "/updateTipoSector",
+        "/updateItemAdicional",
         request,
         (res) => {
           if (res.ok) {
             
             ApiUrls.invokeGET(
-              "/viewTipoSector",
+              "/viewItemAdicional",
               (response) => {
-                settipoSector({
-                  nombre_tipo_sector: "",
+                setItemAdicional({
+                  item_adicional: "",
                 });
                 setLista(response.body);
               },
               (error) => {
-                window.location = "/tipoSector";
+                window.location = "/itemAdicional";
               }
             );
           }
@@ -126,21 +126,21 @@ export default function CTipoSector() {
   //const [peliculas, setPeliculas] = useState([]);
   const PAGINABLOQUE = 10;
 
-  let listatipoSectores = lista;
+  let listaitemAdicionales = lista;
   //buscaPelicula();
-  const cargarListatipoSectores = () => {
-    listatipoSectores = listatipoSectores.slice(
+  const cargarListaitemAdicionales = () => {
+    listaitemAdicionales = listaitemAdicionales.slice(
       (paginaActual - 1) * PAGINABLOQUE,
       paginaActual * PAGINABLOQUE
     );
   };
 
   const getTotalPaginas = () => {
-    let cantidadTotaltipoSectores = lista.length;
-    return Math.ceil(cantidadTotaltipoSectores / PAGINABLOQUE);
+    let cantidadTotalitemAdicionales = lista.length;
+    return Math.ceil(cantidadTotalitemAdicionales / PAGINABLOQUE);
   };
 
-  cargarListatipoSectores();
+  cargarListaitemAdicionales();
 
   return (
     <section className="content">
@@ -150,23 +150,24 @@ export default function CTipoSector() {
             <div className="card card-primary">
               <div className="card-header">
                 <h3 className="card-title">
-                  DDEA GAMEA <small>Tipos de sector</small>
+                  DDEA GAMEA <small>Config. Registro de itemAdicionals</small>
                 </h3>
               </div>
 
               <form id="quickForm">
                 <div className="card-body">
                   <div className="form-group">
-                    <label htmlFor="nameLabel">Nombre tipo sector</label>
+                    <label htmlFor="nameLabel">Nombre del item Adicional</label>
                     <input
                       type="text"
-                      value={tipoSector.nombre_tipo_sector}
-                      placeholder="Nombre clave de tipoSector"
-                      name="nombre_tipo_sector"
+                      value={itemAdicional.item_adicional}
+                      placeholder="Nombre clave de item Adicional"
+                      name="item_adicional"
                       className="form-control"
-                      id="nombre_tipo_sector"
+                      id="item_adicional"
                       onChange={handleInput}
                       onBlur={validaName}
+                      autoComplete="off"
                     />
                     <label
                       ref={labelMensaje}
@@ -174,6 +175,7 @@ export default function CTipoSector() {
                       htmlFor="namex"
                     ></label>
                   </div>
+                 
                 </div>
 
                 <div className="card-footer">
@@ -203,7 +205,7 @@ export default function CTipoSector() {
                   <div className="col-12">
                     <div className="card">
                       <div className="card-header">
-                        <h3 className="card-title">Lista de tipo Sectores</h3>
+                        <h3 className="card-title">Lista de Items Adicionales</h3>
                       </div>
 
                       <div className="card-body" >
@@ -214,42 +216,42 @@ export default function CTipoSector() {
                           <thead>
                             <tr>
                               <th>Clave</th>
-                              <th>nombre</th>
+                              <th>Item</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {listatipoSectores.map((i) => (
-                              <tr key={i.nombre_tipo_sector}>
+                            {listaitemAdicionales.map((i) => (
+                              <tr key={i.item_adicional}>
                                 <td>
                                   <a
                                     href="#"
                                     className="badge badge-warning"
-                                    id={i.nombre_tipo_sector}
+                                    id={i.item_adicional}
                                     onClick={() => {
-                                      estyleSelect(i.nombre_tipo_sector);
-                                      settipoSector(i);
+                                      estyleSelect(i.item_adicional);
+                                      setItemAdicional(i);
                                     }}
                                   >
-                                    {i.nombre_tipo_sector}
+                                    {i.item_adicional}
                                   </a>
                                 </td>
-                                <td>{i.nombre_tipo_sector}</td>
+                                <td>{i.item_adicional}</td>
                               </tr>
                             ))}
                           </tbody>
                           <tfoot>
                             <tr>
                               <th colSpan="2">
-                                <div key={uuid()}><Paginacion
-                                pagina={paginaActual}
-                                total={getTotalPaginas()}
-                                cambioPage={(pagina) => {
-                                  settipoSector({
-                                    nombre_tipo_sector: "",
-                                  });
-                                  setPaginaActual(pagina);
-                                }}
-                              /></div>
+                                <Paginacion
+                                  pagina={paginaActual}
+                                  total={getTotalPaginas()}
+                                  cambioPage={(pagina) => {
+                                    setItemAdicional({
+                                      nombre_itemAdicional: "",
+                                    });
+                                    setPaginaActual(pagina);
+                                  }}
+                                />
                               </th>
                             </tr>
                           </tfoot>
