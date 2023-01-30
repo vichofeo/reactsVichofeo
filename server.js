@@ -1,3 +1,5 @@
+
+//impirtar: modulos-rutas-conecciondb-configuracion-rutas-;evantar server
 //var React = require('react');
 //var ReactDOMServer = require('react-dom/server');
 
@@ -34,7 +36,7 @@ var fs = require('fs')
 
 
   mongoose
-  .connect('mongodb://localhost:27017/iadb', {
+  .connect('mongodb://127.0.0.1:27017/iadb', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       
@@ -43,7 +45,7 @@ var fs = require('fs')
       console.log('MONGO dB CONECTADO....')
   })
   .catch((error) => {
-      console.log('error de conexion db....')
+      console.log('error de conexion db....', error)
   })
 
 //recursos externos arzacion pro headers
@@ -60,9 +62,9 @@ app.use(bodyParser.json({ limit: "50mb" }));
 
 
 //virtual host
-app.use(vhost('api.ddgmalto.io', api));
+//app.use(vhost('api.ddgmalto.io', api));
 app.use(vhost('api.*', api))
-app.use(vhost('api.gamea', api));
+//app.use(vhost('api.gamea', api));
 
 /*app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
