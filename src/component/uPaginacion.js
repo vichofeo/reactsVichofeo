@@ -4,7 +4,7 @@ export default function Paginacion(props) {
     for (let i = 0; i < props.total; i++) {
       let j = i + 1;
       pages.push(
-        <a key={`page${i}`} href={"#"}
+        <a
           className={props.pagina === j ? "active" : ""}
           onClick={() => props.cambioPage(j)}
         >

@@ -44,10 +44,10 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 function CReProgramar() {
-  //const [newState, setnewState] = useState(status)
+  const [datos, setDatos] = useState({})
   //invoca datos
   const [columns, setColumns] = useState(status);
-  console.log(status);
+  
   useEffect(() => {
     function aux() {
       APIInvoker.invokeGET(
@@ -66,14 +66,8 @@ function CReProgramar() {
           });
 
           setColumns(aux);
-          //let newState = {  aux};
-
-          console.log("************resukts::::ssss");
-          console.log(response.body.luchadores);
-          console.log(Object.values(response.body.luchadores));
-          //let nweState = { ...status, var00: { ...status.var00, items: aux } };
-          //setColumns(nweState)
-          //setColumns(nweState);
+          setDatos(response.body.datos)
+         
         },
         (error) => {
           window.location = "/";
@@ -95,7 +89,7 @@ function CReProgramar() {
 
       if (aux[i - 1][1]["items"].length > 0) {
         aux[i - 1][1]["items"].map((v, j) => {
-          console.log(`Numero: ${j}`);
+          
           delete aux[i - 1][1]["items"][j].avatar;
           delete aux[i - 1][1]["items"][j]._id;
         });
@@ -106,7 +100,7 @@ function CReProgramar() {
 
       if (aux[i][1]["items"].length > 0) {
         aux[i][1]["items"].map((v, j) => {
-          console.log(`Numero: ${j}`);
+          
           delete aux[i][1]["items"][j].avatar;
           delete aux[i][1]["items"][j]._id;
         });
@@ -124,21 +118,22 @@ function CReProgramar() {
         orden++;
       }
     }
-    /*
+
+    programa = {_id:datos._id, programa}
+    
+    
     //debe actualizar
-    APIInvoker.invokePOST(
-      "/addPrograma",
+
+    APIInvoker.invokePUT(
+      '/updatePrograma',
       programa,
       (res) => {
-        //console.log("*******************");
-        //console.log(res);
         window.location = "/";
       },
       (err) => {
-        //label.innerHTML = err.mensaje;
-        var mensaje = "mal";
+        console.error('error al actualizar perfil')
       }
-    );*/
+    )
   };
 
  

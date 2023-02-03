@@ -42,11 +42,6 @@ router.use('/secure', (req,res,next)=>{
 var luchadorController = require("../api/controllers/luchadorController")
 var programaController = require("../api/controllers/programaController")
 
-var tipoSectorController = require("../api/controllers/mTipoSectorController")
-var sectorController = require("../api/controllers/mSectorController")
-var espacioController = require("../api/controllers/mEspacioController")
-var escenarioController = require("../api/controllers/mEscenarioController")
-var autorizacionController = require("../api/controllers/mAutorizacionController")
 //registro usuario
 
 
@@ -60,33 +55,11 @@ router.put('/updateLuchador', luchadorController.updateLuchador)
 
 
 router.post('/addPrograma', programaController.addPrograma)
+router.put('/updatePrograma', programaController.updatePrograma)
 router.get('/viewProgram', programaController.viewProgram)
 router.get('/getProgramUltime', programaController.getProgramUltime)
 //acceso publico al servicio
 //router.get('/tweets/:user', tweetController.getUserTweets)
-//multifuncional
-router.get('/validateNameTipoSector/:name', tipoSectorController.nameValidate)
-router.get('/viewTipoSector', tipoSectorController.viewTipoSector)
-router.post('/addTipoSector', tipoSectorController.addTipoSector)
-router.put('/updateTipoSector', tipoSectorController.updateTipoSector)
-
-
-router.get('/validateNamesector/:name', sectorController.nameValidate)
-router.get('/viewSector', sectorController.viewSector)
-router.post('/addSector', sectorController.addSector)
-router.put('/updateSector', sectorController.updateSector)
-
-router.get('/validateNameEspacio/:name', espacioController.nameValidate)
-router.get('/viewEspacio', espacioController.viewEspacio)
-router.post('/addEspacio', espacioController.addEspacio)
-router.put('/updateEspacio', espacioController.updateEspacio)
-
-router.get('/validateNameEscenario/:name', escenarioController.nameValidate)
-router.get('/viewEscenario', escenarioController.viewEscenario)
-router.post('/addEscenario', escenarioController.addEscenario)
-router.put('/updateEscenario', escenarioController.updateEscenario)
-
-router.get('/initial', autorizacionController.initial)
 
 router.get("/*", function (req, res, err) {
   res.status(400).send({ message: "Servicio invalido" });

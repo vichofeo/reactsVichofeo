@@ -1,33 +1,37 @@
 var luchadorModel = require("../models/luchadorModel");
 var programaModel = require("../models/programaModel");
 
+const conversionProgram = (datos) => {
+  let programa = Object.entries(datos);
+  let aux = [];
+  for (let i = 0; i < programa.length; i++) {
+    let lu01 = [];
+    if (programa[i][1].lu01) {
+      for (let j = 0; j < programa[i][1].lu01.length; j++) {
+        lu01[j] = programa[i][1].lu01[j].id;
+      }
+    } else lu01 = null;
+
+    let lu02 = [];
+
+    if (programa[i][1].lu02) {
+      for (let j = 0; j < programa[i][1].lu02.length; j++) {
+        lu02[j] = programa[i][1].lu02[j].id;
+      }
+    } else lu02 = null;
+
+    aux[i] = {
+      orden: programa[i][1].orden,
+      lu01: lu01,
+      lu02: lu02,
+    };
+  }
+  return aux;
+};
 
 const addPrograma = async (req, res, err) => {
   try {
-    let programa = Object.entries(req.body);
-    let aux = [];
-    for (let i = 0; i < programa.length; i++) {
-      let lu01 = [];
-      if (programa[i][1].lu01) {
-        for (let j = 0; j < programa[i][1].lu01.length; j++) {
-          lu01[j] = programa[i][1].lu01[j].id;
-        }
-      } else lu01 = null;
-
-      let lu02 = [];
-
-      if (programa[i][1].lu02) {
-        for (let j = 0; j < programa[i][1].lu02.length; j++) {
-          lu02[j] = programa[i][1].lu02[j].id;
-        }
-      } else lu02 = null;
-
-      aux[i] = {
-        orden: programa[i][1].orden,
-        lu01: lu01,
-        lu02: lu02,
-      };
-    }
+    let aux = conversionProgram(req.body);
 
     let newPrograma = new programaModel({
       luchas: aux,
@@ -52,6 +56,29 @@ const addPrograma = async (req, res, err) => {
   }
 };
 
+const updatePrograma = async (req, res, err) => {
+  try {
+    let identificador = req.body._id;
+    let aux = conversionProgram(req.body.programa);
+
+    const update = {
+      luchas: aux,
+    };
+    let response = await programaModel.updateOne(
+      { _id: identificador },
+      update
+    );
+
+    res.send({
+      ok: true,
+    });
+  } catch (error) {
+    res.send({
+      ok: false,
+      mensaje: error.message || "Error al actulizar el perfil",
+    });
+  }
+};
 const viewProgram = async (req, res, err) => {
   try {
     let programa = await programaModel
@@ -109,20 +136,20 @@ const getProgramUltime = async (req, res, err) => {
       .findOne({ active: true })
       .populate(["luchas.lu01", "luchas.lu02"])
       .sort({ fecha: -1 });
-    
+
     let luchadores = await luchadorModel.find({}).sort({ name: 1 });
     let luchadoresExclude = luchadores.map((i) => {
       return {
         _id: i._id,
         id: i._id,
-        content: i.name,        
+        content: i.name,
         avatar: i.avatar,
       };
     });
 
     if (programa === null) throw new Error("No existe el programacion Activa");
 
-    let datos = { fecha: programa.fecha };
+    let datos = { _id: programa._id, fecha: programa.fecha };
     let luchas = programa.luchas;
     let aux = [];
     let index = 1;
@@ -137,7 +164,7 @@ const getProgramUltime = async (req, res, err) => {
           _id: ob._id,
           id: ob._id,
           content: ob.name,
-          
+          avatar: ob.avatar,
         };
       });
       newState = {
@@ -149,9 +176,10 @@ const getProgramUltime = async (req, res, err) => {
       temp = zfill(index, 2);
       aux = luchas[i].lu02.map((ob) => {
         return {
+          _id: ob._id,
           id: ob._id,
           content: ob.name,
-          
+          avatar: ob.avatar,
         };
       });
 
@@ -166,14 +194,19 @@ const getProgramUltime = async (req, res, err) => {
 
     //filtra luchadores existentes
 
-    Object.values(newState).forEach(item => {
-      console.log(item)
-      luchadoresExclude= luchadoresExclude.filter(lucha => lucha.name !== item.content)
-    })
+    Object.values(newState).forEach((item) => {
+      item.items.forEach((value) => {
+        //luchadoresExclude= luchadoresExclude.find(lucha => lucha.name !== value.content)
+        luchadoresExclude = luchadoresExclude.filter(
+          (lucha) => lucha.content !== value.content
+        );
+      });
+    });
+    newState = { ...newState, var00: { items: luchadoresExclude } };
 
     res.send({
       ok: true,
-      body: { datos: datos, estado: newState, luchadores: luchadoresExclude },
+      body: { datos: datos, estado: newState },
     });
   } catch (error) {
     res.send({
@@ -186,6 +219,7 @@ const getProgramUltime = async (req, res, err) => {
 
 module.exports = {
   addPrograma,
+  updatePrograma,
   viewProgram,
   getProgramUltime,
 };

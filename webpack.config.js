@@ -3,8 +3,6 @@ const path = require("path");
 const webpack = require('webpack');
 
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-var LiveReloadPlugin = require( 'webpack-livereload-plugin');
-
 const basePath = __dirname;
 const distPath = "dist";
 
@@ -18,20 +16,22 @@ const webpackInitConfig = {
     modules: [path.resolve(__dirname, "src"), "node_modules"],
   },
   // DEV SERVER ENTRY POINT
-  devServer: {    
+  devServer: {
+    contentBase: path.join(__dirname, "src"),
     hot: true,
+  },
+  entry: {
+    app: [ `${__dirname  }/src/App.js`,],
+  },
+  output: {
+    path: `${__dirname  }/public`, //path.join(basePath, distPath),
+    filename: "bundle.js", //"[chunkhash][name].js",
+    publicPath: "/public",
+  },
+  devServer:{
     port: 8080,
     historyApiFallback: true
   },
-  entry: 
-     [ __dirname + "/src/index.js"],
-  
-  output: {
-    path: `${__dirname  }/dist`, //path.join(basePath, distPath),
-    filename: "bundle.js", //"[chunkhash][name].js",
-    publicPath: "/dist",
-  },
-  
   module: {
     rules: [
       {
@@ -63,7 +63,6 @@ const webpackInitConfig = {
    },
     ],
   },
-  devtool: 'inline-source-map',
   plugins: [
     new webpack.DefinePlugin({
       PRODUCTION: JSON.stringify(true),
@@ -76,11 +75,11 @@ const webpackInitConfig = {
     }) ,
     new webpack.HotModuleReplacementPlugin(),
     new HTMLWebpackPlugin({
-      template: indextInput,
       filename: indexOutput,
-      favicon: './public/favicon.ico'
+      template: indextInput,
     }),
-    new LiveReloadPlugin()
+       
+    
   ],
 };
 module.exports = webpackInitConfig;

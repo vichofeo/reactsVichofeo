@@ -25,15 +25,14 @@ const tarjetaAux = (nombre) =>{
   return (
     <div className="col-12 col-sm-12 col-md-12" >
       <div className={`card small-box`}>
-        <div className="card-header">
-          <h5 className="card-title"> {nombre}</h5>
-        </div>
         
+       
         <div className="card-footer">
+        <h6>{nombre}</h6> 
           <div className="row">
             <div className="col-sm-12 col-12" >
               
-                <audio width="100%" height="15" controls >
+                <audio width="50%" height="10" controls >
                   <source src={'/muss/' + nombre +'.mp3'} type="audio/mpeg" />
                 </audio>
               
@@ -110,6 +109,11 @@ const tarjetaAux = (nombre) =>{
   return (
     <section className="content">
       <div className="container-fluid">
+      <div className="row">
+      <div className="col-md-4">{tarjetaAux('entrada')}</div>
+      <div className="col-md-4">{tarjetaAux('final')}</div>
+      
+      </div>
         <div className="row">
           <div className="col-md-3">
             <div className="card card-primary card-outline">
@@ -144,11 +148,11 @@ const tarjetaAux = (nombre) =>{
                 </a>
               </div>
             </div>
-            {tarjetaAux('entrada')}
+        
             {tarjetaAux('arbitroHenry')}
             {tarjetaAux('arbitroBambino')}
             {tarjetaAux('arbitroAux')}            
-            {tarjetaAux('final')}
+            
           </div>
 
           <div className="col-md-9">

@@ -1,4 +1,3 @@
-/* #comenatariioo */
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 
@@ -13,8 +12,8 @@ var bodyParser = require("body-parser");
 
 var webpack = require("webpack");
 var webPMiddleware = require("webpack-dev-middleware");
-//var wconfig = require("./webpack.config");
-//var compiler = webpack(wconfig);
+var wconfig = require("./webpack.config");
+var compiler = webpack(wconfig);
 
 //mongosse
 const mongoose = require("mongoose");
@@ -34,9 +33,9 @@ var fs = require('fs')
 
 let connectString = configuration.mongodb.development.connectionString;
 
-
+mongoose.set('strictQuery', false);
   mongoose
-  .connect('mongodb://localhost:27017/iadb', {
+  .connect('mongodb://127.0.0.1:27017/iadb', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       
@@ -53,21 +52,20 @@ let connectString = configuration.mongodb.development.connectionString;
 app.use('*', require('cors')());
 
 
-
 //middlewares
 app.use("/public", express.static( `${__dirname  }/public`));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
-/*
+/* 
 if (process.env.NODE_ENV !== 'production') {
 app.use(
   webPMiddleware(compiler, {
     publicPath: wconfig.output.publicPath,
   })
 );
-}*/
-
+}
+*/
 //virtual host
 app.use(vhost('api.*', api))
 app.use(vhost('ia.io', api));
