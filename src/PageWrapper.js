@@ -1,4 +1,6 @@
-export default function PageWrapper(props) {
+import { NavLink } from 'react-router-dom'
+
+export default function PageWrapper({ children }) {
   return (
     <div className="wrapper">
       <nav className="main-header navbar navbar-expand navbar-dark">
@@ -56,7 +58,7 @@ export default function PageWrapper(props) {
               </div>
             </div>
           </div>
-
+          {/* ***************  menu de navegacion --> */}
           <nav className="mt-2">
             <ul
               className="nav nav-pills nav-sidebar flex-column"
@@ -65,13 +67,14 @@ export default function PageWrapper(props) {
               data-accordion="false"
             >
               <li className="nav-item">
-                <a href="/" className="nav-link">
+                <NavLink  to="/" className="nav-link">
                   <i className="nav-icon fas fa-th"></i>
                   <p>
                     Registro
                     <span className="right badge badge-danger">Wrestler</span>
                   </p>
-                </a>
+                </NavLink>
+
               </li>
               <li className="nav-item">
                 <a href="#" className="nav-link">
@@ -84,26 +87,29 @@ export default function PageWrapper(props) {
                 </a>
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <a href="/programar" className="nav-link">
+                    <NavLink to="/programar" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Hacer Programa</p>
-                    </a>
+                    </NavLink>
+
                   </li>
                   <li className="nav-item">
-                    <a href="/reProgramar" className="nav-link">
+                    <NavLink to="/reProgramar" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Re Programar</p>
-                    </a>
+                    </NavLink>
+
                   </li>
                 </ul>
               </li>
 
               <li className="nav-header">Programa</li>
               <li className="nav-item">
-                <a href="/verPrograma" className="nav-link">
-                  <i className="nav-icon far fa-circle text-danger"></i>
+                <NavLink to= "/verPrograma" className="nav-link">
+                <i className="nav-icon far fa-circle text-danger"></i>
                   <p className="text">Ver Fecha activa</p>
-                </a>
+                </NavLink>
+
               </li>
             </ul>
           </nav>
@@ -111,10 +117,10 @@ export default function PageWrapper(props) {
       </aside>
 
       <div className="content-wrapper">
-        
+
 
         <section className="content">
-          <div className="container-fluid">{props.children}</div>
+          <div className="container-fluid">{children}</div>
         </section>
       </div>
 

@@ -3,8 +3,8 @@ import PageWrapper from "../PageWrapper";
 
 export default function Programar() {
   return (
-    <PageWrapper>
+    
       <CReProgramar />
-    </PageWrapper>
+    
   );
 }
