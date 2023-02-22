@@ -20,7 +20,7 @@ const useFormulario = (datosIni)=>{
 
       const handleFileImage = (e)=>{        
         e.preventDefault()
-        console.log('evvv', e)
+        
         let name = e.target.name
         let reader = new FileReader()
         let file = e.target.files[0]
@@ -39,7 +39,22 @@ const useFormulario = (datosIni)=>{
 
       }
 
-return [formulario, handleInput, reset, handleFileImage]
+      const handleFile = (e)=>{        
+        e.preventDefault()
+        
+        let name = e.target.name
+        let reader = new FileReader()
+        let file = e.target.files[0]
+
+        reader.onloadend = () =>{
+          setFormulario({...formulario, [name]: reader.result})
+        }
+
+        reader.readAsDataURL(file)
+
+      }
+
+return [formulario, handleInput, reset, handleFileImage, handleFile]
 }
 
 export default useFormulario
