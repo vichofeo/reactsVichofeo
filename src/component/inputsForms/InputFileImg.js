@@ -1,6 +1,6 @@
 
 
-const InputFile = ({ label, imgIn, idx, icon, ...restoProps }) => {
+const InputFileImg = ({ label, imgIn, idx, ...restoProps }) => {
     return (
         <div className="row">
             <div className="col-md-6">
@@ -11,7 +11,7 @@ const InputFile = ({ label, imgIn, idx, icon, ...restoProps }) => {
                         className="select-avatar"
                     >
                         <i
-                            className={`fa fa-${icon} fa-2x`}
+                            className={`fa fa-camera fa-2x`}
                             aria-hidden="true"
                             style={{ color: "Tomato" }}
                         ></i>
@@ -27,11 +27,11 @@ const InputFile = ({ label, imgIn, idx, icon, ...restoProps }) => {
             </div>
             <div className="col-md-6">
             <img src={imgIn} width="100%" alt="" />
-            e
+            
             </div>
             
         </div>
     )
 }
 
-export default InputFile
+export default InputFileImg

@@ -2,19 +2,24 @@
 import useFormulario from "../../hooks/useFormulario"
 import ButtonSubmit from "./Button"
 import Input from "./Input"
-import InputFile from "./InputFileImg"
+import InputFileImg from "./InputFileImg"
+import InputFileMusic from "./InputFileMusic"
 
 
 
 const FormLuchador = ({ submit }) => {
 
-    const [formulario, handleInput, reset, handleFileImage, handleFile] = useFormulario({
-        name: "",
-        nombre: "",
-        avatar: null,
-        foto: null,
-        musica: null,
-    })
+    
+
+    const [formulario, handleInput, reset, handleFileImage, handleFile, dataEdit] = useFormulario(
+        {
+            name: "",
+            nombre: "",
+            avatar: null,
+            foto: null,
+            musica: null,
+        }
+    )
 
 
     const handleSubmit = (e) => {
@@ -23,9 +28,10 @@ const FormLuchador = ({ submit }) => {
         reset()
     }
 
+    
 
     return (
-        <form id="quickForm">
+        <form id="quickForm" onSubmit={(e) => e.preventDefault()}>
 
             <Input
                 label="Nombre Clave del Luchador"
@@ -44,41 +50,44 @@ const FormLuchador = ({ submit }) => {
                 name="nombre"
                 onChange={handleInput}
             />
-            <InputFile
+            <InputFileImg
                 label="Avatar Luchador"
                 imgIn={formulario.avatar}
                 href="#"
                 idx="avatarInput"
-                icon="camera"
+
                 name="avatar"
                 accept=".gif,.jpg,.jpeg,.png"
                 onChange={handleFileImage}
             />
-            <InputFile
+            <InputFileImg
                 label="Foto Luchador"
                 imgIn={formulario.foto}
                 href="#"
                 idx="fotoInput"
-                icon="camera"
                 name="foto"
                 accept=".gif,.jpg,.jpeg,.png"
                 onChange={handleFileImage}
             />
-            <InputFile
+            <InputFileMusic
                 label="Musica del luchador"
-                imgIn={formulario.foto}
-                href="#"
                 idx="musicInput"
-                icon="music"
+                nameArtist={formulario.name}
+                writer={formulario.nombre}
+                avatar={formulario.avatar}
+                music={formulario.musica}
+                fileName={formulario.fileNameActive}
+                href="#"
                 name="musica"
                 accept=".mp3, .mp4"
                 onChange={handleFile}
+
             />
             <ButtonSubmit onClick={handleSubmit}>Enviar</ButtonSubmit>
-            
+
         </form>
 
-        
+
     )
 }
 

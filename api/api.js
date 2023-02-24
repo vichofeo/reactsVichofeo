@@ -49,6 +49,7 @@ var programaController = require("../api/controllers/programaController")
 //acceso restringido
 router.get('/viewLuchador', luchadorController.viewLuchador)
 router.get('/viewLuchadorLite', luchadorController.viewLuchadorLite)
+router.put('/viewLuchadorLimit', luchadorController.viewLuchadorLimit)
 router.get('/validateName/:name', luchadorController.nameValidate)
 router.post('/addLuchador', luchadorController.addLuchador)
 router.put('/updateLuchador', luchadorController.updateLuchador)

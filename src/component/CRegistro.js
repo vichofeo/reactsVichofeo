@@ -1,37 +1,37 @@
 import { useState } from "react"
 import Card from "./inputsForms/Card"
+import DataTableLuchador from "./inputsForms/DataTableLuchador"
 import FormLuchador from "./inputsForms/FormLuchador"
 
-//reproductor multimedia
-import ReactJkMusicPlayer from 'react-jinke-music-player'
-import 'react-jinke-music-player/assets/index.css'
 
 
 const CRegistro = () => {
 
-  const [luchadores, setLuchadores] = useState([])
-  
+  const [luchadores, setLuchadores] = useState()
+
 
   const guardarInformacion = (luchador) => {
-    setLuchadores([
-      ...luchadores,
-      luchador])
+    setLuchadores(luchador)
 
   }
-  
-  console.log(luchadores)
+
+  //console.log(luchadores)
   return (
     <section className="content">
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-6">
             <Card tituloCard="Favor Llene los siguientes campos">
-              <FormLuchador submit={guardarInformacion} />
+              <FormLuchador submit={guardarInformacion}  />
 
             </Card>
           </div>
           <div className="col-md-6">
-         tablaDatos
+            <DataTableLuchador 
+            url= {`/viewLuchadorLimit` }   
+            title = "Lista de Luchadores"   
+            clickLuchador = {guardarInformacion}      
+             />
 
           </div>
         </div>

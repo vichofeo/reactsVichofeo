@@ -125,10 +125,52 @@ const viewLuchadorLite = async (req, res, err) => {
     });
   }
 };
+const viewLuchadorLimit = async (req, res, err) => {
+  try {
+    //let luchadores = await luchadorModel.find({},{name:1}).sort({ name: 1 });
+    let totalRows = await luchadorModel.find({}).count();
+    let rowsPerPage = 5;
+    let pageActive=1
+            
+    const datos = req.body
+    if(datos){
+      rowsPerPage = datos.rowsPerPage ? datos.rowsPerPage : rowsPerPage
+      pageActive = datos.pageActive ? datos.pageActive : pageActive      
+    }
+    let blocksPages = Math.ceil(totalRows / rowsPerPage)
+
+    let inicial = rowsPerPage * (pageActive - 1) +1
+    const luchadores = await luchadorModel.find({}).limit(rowsPerPage).skip(inicial - 1);
+
+    const response = luchadores.map((i) => {
+      return {
+        _id: i._id,
+        name: i.name,
+        nombre: i.nombre,
+        avatar: i.avatar,
+        musica: i.musica,
+        foto: i.foto,
+      };
+    });
+
+    res.send({
+      ok: true,
+      body: {blocksPages: blocksPages, pageActive: pageActive, luchadores: response},
+    });
+  } catch (error) {
+    res.send({
+      ok: false,
+      mensaje: error.message || "Error en el pedido de los datos de luchadores",
+      error: error,
+    });
+  } 
+};
 module.exports = {
   nameValidate,
   addLuchador,
   updateLuchador,
   viewLuchador,
-  viewLuchadorLite
+  viewLuchadorLite, 
+  viewLuchadorLimit,
+  
 };
