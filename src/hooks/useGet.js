@@ -22,17 +22,15 @@ const useGetdata = (url)=>{
           )
      } 
       
-     const getRespuestawBody = (data) =>{
-        console.log("desde useget", data)
-        console.log("la url", url)
+     const getRespuestawBody = (data) =>{        
         ApiInvoker.invokeGETwBody(url,data,
             (res) =>{
                 
                 setRespuesta(res.body)
-                console.log("Pasmosss ", res.body)
+                
             },
             (e)=>{
-                console.log("Mallllll ", e)
+                
                 navigate("/");
               setRespuesta({})
             }

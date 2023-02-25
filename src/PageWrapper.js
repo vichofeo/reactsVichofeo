@@ -33,13 +33,13 @@ export default function PageWrapper({ children }) {
               <img
                 src="dist/img/user2-160x160.jpg"
                 className="img-circle elevation-2"
-                alt="User Image"
+                alt="Usuario Foto"
               />
             </div>
             <div className="info">
-              <a href="#" className="d-block">
-                InMortales Astros
-              </a>
+              
+                Luchadores
+              
             </div>
           </div>
 

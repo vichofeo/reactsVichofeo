@@ -37,7 +37,7 @@ const  PaginacionDataTable = ({ pages, pageActive, buscaData }) => {
                 { numeros}
 
                 <button style={{backgroundColor: '#0A283E', ...styles.button}}>
-                    <i className="ion-arrow-right-b"></i>
+                    <i className="fa fa-forward"></i>
                 </button>
             </div>
         </div>

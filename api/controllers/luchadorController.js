@@ -131,11 +131,11 @@ const viewLuchadorLimit = async (req, res, err) => {
     let totalRows = await luchadorModel.find({}).count();
     let rowsPerPage = 5;
     let pageActive=1
-            
+
     const datos = req.body
     if(datos){
       rowsPerPage = datos.rowsPerPage ? datos.rowsPerPage : rowsPerPage
-      pageActive = datos.pageActive ? datos.pageActive : pageActive      
+      pageActive = datos.pageActive ? datos.pageActive : pageActive
     }
     let blocksPages = Math.ceil(totalRows / rowsPerPage)
 
@@ -163,7 +163,7 @@ const viewLuchadorLimit = async (req, res, err) => {
       mensaje: error.message || "Error en el pedido de los datos de luchadores",
       error: error,
     });
-  } 
+  }
 };
 module.exports = {
   nameValidate,
@@ -172,5 +172,4 @@ module.exports = {
   viewLuchador,
   viewLuchadorLite, 
   viewLuchadorLimit,
-  
 };

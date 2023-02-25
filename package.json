@@ -3,16 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@jeffreyca/react-jinke-music-player": "^4.22.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "nodemon": "^2.0.20",
+    "polyfill": "^0.1.0",
+    "polyfills": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-jinke-music-player": "^4.24.2",
     "react-modern-audio-player": "^1.4.0-rc.1",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "svgo": "^3.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -44,10 +46,17 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.9.1",
+    "jsx-control-statements": "^3.2.8",
+    "mongoose": "^6.10.0",
     "mongoose-unique-validator": "^3.1.0",
+    "node-moment": "^2.5.1",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5",
     "path": "^0.12.7",
+    "react-addons-update": "^15.6.3",
     "react-beautiful-dnd": "^13.1.1",
+    "util": "^0.12.5",
+    "uuid": "^9.0.0",
     "vhost": "^3.0.2"
   }
 }

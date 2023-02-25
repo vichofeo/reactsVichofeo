@@ -11,14 +11,13 @@ class APIInvoker {
     }
   }
 
-  invokeGET(url, okCallback, failCallback) {    
+  invokeGET(url, okCallback, failCallback) {
     let params = {
       method: 'get',
-      headers: this.getAPIHeader(),    
+      headers: this.getAPIHeader()
     }
     this.invoke(url, okCallback, failCallback, params)
   }
-
   invokeGETwBody(url, body, okCallback, failCallback) {
     let params = {
       method: 'put',
@@ -28,7 +27,6 @@ class APIInvoker {
     console.log("paraamssss", params)
     this.invoke(url, okCallback, failCallback, params)
   }
-
   invokePUT(url, body, okCallback, failCallback) {
     let params = {
       method: 'put',
@@ -71,4 +69,6 @@ class APIInvoker {
       })
   }
 }
-export default new APIInvoker()
+
+const api = new APIInvoker()
+export default api

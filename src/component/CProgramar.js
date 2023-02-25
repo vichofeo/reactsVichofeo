@@ -172,7 +172,7 @@ function CProgramar() {
                             column={
                               columns[Object.entries(columns)[index - 1][0]]
                             }
-                          />
+                          /> 
                         </div>
                         <div className="col-sm-6">
                           <Column

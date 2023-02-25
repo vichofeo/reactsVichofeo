@@ -7,19 +7,11 @@ import InputFileMusic from "./InputFileMusic"
 
 
 
-const FormLuchador = ({ submit }) => {
+const FormLuchador = ({ submit,formulario, handleInput, reset, handleFileImage, handleFile }) => {
 
     
 
-    const [formulario, handleInput, reset, handleFileImage, handleFile, dataEdit] = useFormulario(
-        {
-            name: "",
-            nombre: "",
-            avatar: null,
-            foto: null,
-            musica: null,
-        }
-    )
+   
 
 
     const handleSubmit = (e) => {

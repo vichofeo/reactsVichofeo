@@ -21,7 +21,7 @@ const DataTableLuchador = ({ url, title, clickLuchador }) => {
       };
      
       const traeData = (datos) =>{
-        console.log("llego page", datos)
+        
         getRespuestawBody(datos)
       }
     //console.log("respuesta", respuesta.blocksPages)
@@ -59,9 +59,7 @@ const DataTableLuchador = ({ url, title, clickLuchador }) => {
                                                     <button
                                                         className="badge badge-warning"
                                                         id={i.name}
-                                                        onClick={() => {
-                                                            console.log("hizo clidflag", flag)
-                                                            
+                                                        onClick={() => {                                                            
                                                             clickLuchador(i)                                                            
                                                             flag= estyleSelect(i.name, !flag)
                                                         }
@@ -79,7 +77,7 @@ const DataTableLuchador = ({ url, title, clickLuchador }) => {
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <button type="button" onClick={() => { console.log("toque musicas") }}> musica</button>
+                                                        <button type="button"  className="btn btn-app" onClick={() => { clickLuchador(i)  }}> <i className="fas fa-play"></i> Play</button>
                                                     </div>
                                                 </td>
                                             </tr>
