@@ -3,6 +3,7 @@ var Schema = mongose.Schema;
 
 var programa = new Schema({
     fecha: {type: Date, default:Date.now, unique: true},
+    name:{type:String, default: "Evento X"},
     luchas: [{
         orden: Number, 
         lu01: [ {type: Schema.Types.ObjectId, ref:'Luchador'}],

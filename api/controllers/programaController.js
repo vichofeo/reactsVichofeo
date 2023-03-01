@@ -31,9 +31,10 @@ const conversionProgram = (datos) => {
 
 const addPrograma = async (req, res, err) => {
   try {
-    let aux = conversionProgram(req.body);
+    let aux = conversionProgram(req.body.luchas);
 
     let newPrograma = new programaModel({
+      name: req.body.name,
       luchas: aux,
     });
 
@@ -59,9 +60,10 @@ const addPrograma = async (req, res, err) => {
 const updatePrograma = async (req, res, err) => {
   try {
     let identificador = req.body._id;
-    let aux = conversionProgram(req.body.programa);
+    let aux = conversionProgram(req.body.luchas);
 
     const update = {
+      name: req.body.name,
       luchas: aux,
     };
     let response = await programaModel.updateOne(
@@ -89,6 +91,7 @@ const viewProgram = async (req, res, err) => {
     if (programa === null) throw new Error("No existe el programacion Activa");
 
     let response = {
+      name: programa.name,
       fecha: programa.fecha,
       luchas: programa.luchas.map((i) => {
         return {
@@ -132,8 +135,9 @@ function zfill(number, width) {
 
 const getProgramUltime = async (req, res, err) => {
   try {
+    let id = req.params.id
     let programa = await programaModel
-      .findOne({ active: true })
+      .findOne({ active: true, _id: id })
       .populate(["luchas.lu01", "luchas.lu02"])
       .sort({ fecha: -1 });
 
@@ -149,7 +153,7 @@ const getProgramUltime = async (req, res, err) => {
 
     if (programa === null) throw new Error("No existe el programacion Activa");
 
-    let datos = { _id: programa._id, fecha: programa.fecha };
+    let datos = { _id: programa._id, name: programa.name, fecha: programa.fecha };
     let luchas = programa.luchas;
     let aux = [];
     let index = 1;
@@ -216,10 +220,38 @@ const getProgramUltime = async (req, res, err) => {
     });
   }
 };
+const getPrograms = async (req, res, err) => {
+  try {
+    let programa = await programaModel
+      .find({ active: true }, { name: 1 })
+      .sort({ name: 1 });
 
+    if (programa === null) throw new Error("No existe el programacion Activa");
+
+    let response = programa.map(obj => {
+      return (
+        {
+          value: obj._id,//{ id: obj._id, name: obj.name },
+          label: obj.name
+        })
+    })
+
+    res.send({
+      ok: true,
+      body: response,
+    });
+  } catch (error) {
+    res.send({
+      ok: false,
+      mensaje: error.message || "Error en el pedido de los datos de luchadores",
+      error: error,
+    });
+  }
+};
 module.exports = {
   addPrograma,
   updatePrograma,
   viewProgram,
   getProgramUltime,
+  getPrograms
 };

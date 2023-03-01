@@ -1,38 +1,46 @@
 
-import useFormulario from "../../hooks/useFormulario"
+
 import ButtonSubmit from "./Button"
 import Input from "./Input"
 import InputFileImg from "./InputFileImg"
 import InputFileMusic from "./InputFileMusic"
+import { useRef } from "react"
+import validate from "../../validate/validate"
 
 
+const FormLuchador = ({ submit, formulario, handleInput, reset, handleFileImage, handleFile, messageAfterSubmit }) => {
 
-const FormLuchador = ({ submit,formulario, handleInput, reset, handleFileImage, handleFile }) => {
+    const labelMensaje = useRef();
+    const labelGuardar = useRef();
 
-    
-
-   
+    const [validateValueInDb] = validate()
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        submit(formulario)
-        reset()
+        submit(formulario, labelGuardar.current)
     }
 
-    
+    const fReset = () =>{
+        labelMensaje.current.innerHTML=""
+        labelGuardar.current.innerHTML=""
+        reset()
+    }
+    //validaciones
+    messageAfterSubmit = !messageAfterSubmit ? null : messageAfterSubmit
 
     return (
         <form id="quickForm" onSubmit={(e) => e.preventDefault()}>
 
             <Input
                 label="Nombre Clave del Luchador"
-                labelError="para eerrior"
+                labelError={labelMensaje}
                 type="text"
                 value={formulario.name}
                 placeholder="Nombre clave de luchador"
                 name="name"
                 onChange={handleInput}
+                onBlur={validateValueInDb.bind(this, "/validateName", labelMensaje.current)}
             />
             <Input
                 label="Nombre Completo del Luchador"
@@ -75,7 +83,11 @@ const FormLuchador = ({ submit,formulario, handleInput, reset, handleFileImage, 
                 onChange={handleFile}
 
             />
-            <ButtonSubmit onClick={handleSubmit}>Enviar</ButtonSubmit>
+            <ButtonSubmit
+            fReset={fReset}
+                labelError={labelGuardar}
+                onClick={handleSubmit}
+            >Enviar</ButtonSubmit>
 
         </form>
 

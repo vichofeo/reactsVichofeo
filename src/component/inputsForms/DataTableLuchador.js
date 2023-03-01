@@ -7,7 +7,7 @@ const DataTableLuchador = ({ url, title, clickLuchador }) => {
     
     const [respuesta, getRespuesta, getRespuestawBody] = useGetdata(url)
 
-    useEffect(() => getRespuesta, []);
+    useEffect(() => getRespuesta(), []);
 
     const blocksPages = respuesta.blocksPages
     const pageActive = respuesta.pageActive

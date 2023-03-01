@@ -5,10 +5,11 @@ import DataTableLuchador from "./inputsForms/DataTableLuchador"
 import FormLuchador from "./inputsForms/FormLuchador"
 
 import useSenddata from "../hooks/useSendData"
+import { useNavigate } from "react-router-dom"
 
 
 const CRegistro = () => {
-
+  let navigate = useNavigate();
   const [formulario, handleInput, reset, handleFileImage, handleFile, dataEdit] = useFormulario(
     {
       name: "",
@@ -19,9 +20,9 @@ const CRegistro = () => {
     }
   )
 
-  const [dataTraffic, saveData, updateData] = useSenddata({})
+  const [dataTraffic, saveData, updateData] = useSenddata("/")
 
-  const guardarInformacion = (luchador) => {
+  const guardarInformacion = (luchador, objLabel) => {
     let request = {
       name: luchador.name,
       nombre: luchador.nombre,
@@ -32,11 +33,13 @@ const CRegistro = () => {
 
     if (luchador._id) {
       request = { ...request, _id: luchador._id }
-      updateData(request, "/updateLuchador")
-    } else saveData(request, "/addLuchador")
+      updateData(request, "/updateLuchador", objLabel, reset)
+    } else saveData(request, "/addLuchador", objLabel, reset)
+
+    
+   
   }
-
-
+ 
   return (
     <section className="content">
       <div className="container-fluid">
@@ -50,6 +53,7 @@ const CRegistro = () => {
                 handleFileImage={handleFileImage}
                 handleFile={handleFile}
                 dataEdit={dataEdit}
+                messageAfterSubmit={dataTraffic}
               />
 
             </Card>

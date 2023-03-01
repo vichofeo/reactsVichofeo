@@ -24,7 +24,7 @@ class APIInvoker {
       headers: this.getAPIHeader(),
       body: JSON.stringify(body)
     }
-    console.log("paraamssss", params)
+    
     this.invoke(url, okCallback, failCallback, params)
   }
   invokePUT(url, body, okCallback, failCallback) {
@@ -70,5 +70,5 @@ class APIInvoker {
   }
 }
 
-const api = new APIInvoker()
-export default api
+const ApiInvoker = new APIInvoker()
+export default ApiInvoker

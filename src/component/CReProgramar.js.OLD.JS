@@ -1,12 +1,8 @@
-import  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./dragComponent/Column";
 import { status } from "./dragComponent/mock";
 import APIInvoker from "../utils/ApiInvoker";
-import useFormulario from "../hooks/useFormulario";
-import Input from "./inputsForms/Input";
-
-import { useNavigate } from "react-router-dom";
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -47,40 +43,40 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-function CProgramar() {
-  let navigate = useNavigate()
-  const [formulario, handleInput] = useFormulario({nameEvent:""})
-  //const [newState, setnewState] = useState(status)
+function CReProgramar() {
+  const [datos, setDatos] = useState({})
   //invoca datos
   const [columns, setColumns] = useState(status);
-
+  
   useEffect(() => {
-    
+    function aux() {
       APIInvoker.invokeGET(
-        "/viewLuchadorLite",
+        "/getProgramUltime",
         (response) => {
-          let aux = response.body.map((i) => {
-            return {
-              id: i._id,
-              _id: i._id,
-              content: i.name,
-              avatar: i.avatar,
-            };
+          
+console.log("respuesta", response)
+          let newState = response.body.estado
+
+          let aux = null;
+          Object.entries(status).map(([columnId, column], index) => {
+            aux = { ...aux, [columnId]: column };
+            if (newState[columnId]) {
+              aux = { ...aux, [columnId]: {...aux[columnId], items: newState[columnId].items} };
+            } 
           });
 
-          let nweState = { ...status, var00: { ...status.var00, items: aux } };
-          //setColumns(nweState)
-          setColumns(nweState);
+          setColumns(aux);
+          setDatos(response.body.datos)
+         
         },
         (error) => {
-          //window.location = "/";
-          navigate("/programar")
+          window.location = "/";
         }
       );
-    
-    
+    }
+    aux();
   }, []);
-
+  //actulizacion de datos
   const guardarDatos = (e) => {
     e.preventDefault();
 
@@ -91,9 +87,9 @@ function CProgramar() {
     for (let i = 2; i < aux.length; i = i + 2) {
       let sw = 0;
 
-      if (aux[i - 1][1]["items"] && aux[i - 1][1]["items"].length > 0) {
+      if (aux[i - 1][1]["items"].length > 0) {
         aux[i - 1][1]["items"].map((v, j) => {
-          console.log(`Numero: ${j}`);
+          
           delete aux[i - 1][1]["items"][j].avatar;
           delete aux[i - 1][1]["items"][j]._id;
         });
@@ -102,9 +98,9 @@ function CProgramar() {
         aux[i - 1][1]["items"] = null;
       }
 
-      if (aux[i][1]["items"] && aux[i][1]["items"].length > 0) {
+      if (aux[i][1]["items"].length > 0) {
         aux[i][1]["items"].map((v, j) => {
-          console.log(`Numero: ${j}`);
+          
           delete aux[i][1]["items"][j].avatar;
           delete aux[i][1]["items"][j]._id;
         });
@@ -122,27 +118,25 @@ function CProgramar() {
         orden++;
       }
     }
-    console.log("===============");
-    console.log(programa);
-    //guarda
-    APIInvoker.invokePOST(
-      "/addPrograma",
-      { name: formulario.nameEvent?formulario.nameEvent:"EventoX", 
-     luchas: programa},
+
+    programa = {_id:datos._id, programa}
+    
+    
+    //debe actualizar
+
+    APIInvoker.invokePUT(
+      '/updatePrograma',
+      programa,
       (res) => {
-        //console.log("*******************");
-        //console.log(res);
-        //window.location = "/programar";        
-        navigate("/reProgramar")
+        window.location = "/";
       },
       (err) => {
-        //label.innerHTML = err.mensaje;
-        var mensaje = "mal";
-        
+        console.error('error al actualizar perfil')
       }
-    );
+    )
   };
 
+ 
   return (
     <>
       <div
@@ -152,15 +146,6 @@ function CProgramar() {
           onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
         >
           <div className="container-fluid">
-           <Input 
-           label="Nombre del Evento"
-           type ="text"
-           value = {formulario.nameEvent}
-           placeholder="Digite el nombre de evento a programarse"
-           name = "nameEvent"
-           onChange={handleInput}
-
-           />
             <div className="row mb-2">
               <div className="col-sm-4">
                 <Column
@@ -200,7 +185,6 @@ function CProgramar() {
                             index={index}
                             column={column}
                           />
-                          
                         </div>
                       </div>
                     );
@@ -216,4 +200,4 @@ function CProgramar() {
   );
 }
 
-export default CProgramar;
+export default CReProgramar;

@@ -5,14 +5,16 @@ var mongoose = require("mongoose");
 //servicio verifica nname
 const nameValidate = async (req, res, err) => {
   try {
-    let luchador = await luchadorModel.find().byName(req.params.name);
+    let luchador = await luchadorModel.find({},{name:1}).byName(req.params.name);
+    
     if (luchador.length > 0) throw new Error("Luchador ya existente");
-
+    
     res.send({ ok: true, mensaje: "clave de luchador disponible" });
   } catch (error) {
+    
     res.send({
       ok: false,
-      mensaje: error.mensaje || "errro en la validacion pase por tyr",
+      mensaje: error.message  || "errro en la validacion pase por tyr",
     });
   }
 };
@@ -34,9 +36,10 @@ const addLuchador = async (req, res, err) => {
       mensaje: "guardado exitoso",
       luchador: newLuchador,
     });
-  } catch (error) {
+  } catch (e) {
+    
     let mensaje = null;
-    if (error.errors != null && error.errors.name != null) {
+    if (e.errors != null && e.errors.name != null) {
       mensaje = "Nombre de luchador clave existente";
     } else {
       mensaje = " errro al guardrar";
@@ -45,7 +48,7 @@ const addLuchador = async (req, res, err) => {
     res.send({
       ok: false,
       mensaje: "falla en la creacion de luchador",
-      error: mensaje || error.message,
+      error: mensaje || e.message,
     });
   }
 };

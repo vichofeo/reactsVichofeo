@@ -58,7 +58,8 @@ router.put('/updateLuchador', luchadorController.updateLuchador)
 router.post('/addPrograma', programaController.addPrograma)
 router.put('/updatePrograma', programaController.updatePrograma)
 router.get('/viewProgram', programaController.viewProgram)
-router.get('/getProgramUltime', programaController.getProgramUltime)
+router.get('/getPrograms', programaController.getPrograms)
+router.get('/getProgramUltime/:id', programaController.getProgramUltime)
 //acceso publico al servicio
 //router.get('/tweets/:user', tweetController.getUserTweets)
 

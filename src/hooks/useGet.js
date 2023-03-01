@@ -2,12 +2,13 @@ import ApiInvoker from '../utils/ApiInvoker';
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const useGetdata = (url)=>{
+const useGet = (url)=>{
 
     const [respuesta, setRespuesta] = useState({})
 
     let navigate = useNavigate();
 
+    //datos con paginacion por defecto
     const getRespuesta = () =>{
         ApiInvoker.invokeGETwBody(
             url, {},
@@ -42,4 +43,4 @@ const useGetdata = (url)=>{
 return [respuesta, getRespuesta, getRespuestawBody]
 }
 
-export default useGetdata
+export default useGet
