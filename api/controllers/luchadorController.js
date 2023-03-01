@@ -2,19 +2,21 @@ var luchadorModel = require("../models/luchadorModel");
 
 var mongoose = require("mongoose");
 
+
+
 //servicio verifica nname
 const nameValidate = async (req, res, err) => {
   try {
-    let luchador = await luchadorModel.find({},{name:1}).byName(req.params.name);
-    
+    let luchador = await luchadorModel.find({}, { name: 1 }).byName(req.params.name);
+
     if (luchador.length > 0) throw new Error("Luchador ya existente");
-    
+
     res.send({ ok: true, mensaje: "clave de luchador disponible" });
   } catch (error) {
-    
+
     res.send({
       ok: false,
-      mensaje: error.message  || "errro en la validacion pase por tyr",
+      mensaje: error.message || "errro en la validacion pase por tyr",
     });
   }
 };
@@ -37,7 +39,7 @@ const addLuchador = async (req, res, err) => {
       luchador: newLuchador,
     });
   } catch (e) {
-    
+
     let mensaje = null;
     if (e.errors != null && e.errors.name != null) {
       mensaje = "Nombre de luchador clave existente";
@@ -54,7 +56,7 @@ const addLuchador = async (req, res, err) => {
 };
 //actulizar luchadoir
 const updateLuchador = async (req, res, err) => {
-  
+
   try {
     let identificador = req.body._id
     const update = {
@@ -112,7 +114,7 @@ const viewLuchadorLite = async (req, res, err) => {
         name: i.name,
         nombre: i.nombre,
         avatar: i.avatar,
-        
+
       };
     });
 
@@ -133,16 +135,16 @@ const viewLuchadorLimit = async (req, res, err) => {
     //let luchadores = await luchadorModel.find({},{name:1}).sort({ name: 1 });
     let totalRows = await luchadorModel.find({}).count();
     let rowsPerPage = 5;
-    let pageActive=1
+    let pageActive = 1
 
     const datos = req.body
-    if(datos){
+    if (datos) {
       rowsPerPage = datos.rowsPerPage ? datos.rowsPerPage : rowsPerPage
       pageActive = datos.pageActive ? datos.pageActive : pageActive
     }
     let blocksPages = Math.ceil(totalRows / rowsPerPage)
 
-    let inicial = rowsPerPage * (pageActive - 1) +1
+    let inicial = rowsPerPage * (pageActive - 1) + 1
     const luchadores = await luchadorModel.find({}).limit(rowsPerPage).skip(inicial - 1);
 
     const response = luchadores.map((i) => {
@@ -158,7 +160,7 @@ const viewLuchadorLimit = async (req, res, err) => {
 
     res.send({
       ok: true,
-      body: {blocksPages: blocksPages, pageActive: pageActive, luchadores: response},
+      body: { blocksPages: blocksPages, pageActive: pageActive, luchadores: response },
     });
   } catch (error) {
     res.send({
@@ -168,11 +170,82 @@ const viewLuchadorLimit = async (req, res, err) => {
     });
   }
 };
+
+const viewLuchadores = async (req, res, err) => {
+  try {
+    let response = []
+    
+    if (req.body.lu01) {
+      
+      let aux = req.body.lu01
+      
+      let luchadores = await luchadorModel
+      .find({ _id: { $in: aux } })
+      .sort({ name: 1 });
+       response[0] = luchadores.map((i) => {
+        return {
+          _id: i._id,
+          name: i.name,
+          nombre: i.nombre,
+          avatar: i.avatar,
+          foto: i.foto
+        };
+      });
+      
+    }
+
+    if (req.body.lu02) {
+      let aux = req.body.lu02
+      
+      let luchadores = await luchadorModel
+      .find({ _id: { $in: aux } })
+      .sort({ name: 1 });
+       response[1] = luchadores.map((i) => {
+        return {
+          _id: i._id,
+          name: i.name,
+          nombre: i.nombre,
+          avatar: i.avatar,
+          foto: i.foto
+        };
+      });
+    }
+    res.send({
+      ok: true,
+      body: response,
+    });
+  } catch (error) {
+    res.send({
+      ok: false,
+      mensaje: error.message || "Error en el pedido de los datos de luchadores",
+      error: error,
+    });
+  }
+}
+
+const getMussLuchador = async (req, res, err) => {
+  try {
+    let id= req.params.id
+    let luchador = await luchadorModel.findOne({ _id: id },{musica:1});
+
+    
+
+    res.send({ ok: true, body: luchador.musica});
+  } catch (error) {
+
+    res.send({
+      ok: false,
+      mensaje: error.message || "errro en la validacion pase por tyr",
+    });
+  }
+};
 module.exports = {
   nameValidate,
   addLuchador,
   updateLuchador,
   viewLuchador,
-  viewLuchadorLite, 
+  viewLuchadorLite,
   viewLuchadorLimit,
+  viewLuchadores,
+  getMussLuchador
 };

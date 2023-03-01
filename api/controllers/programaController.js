@@ -223,7 +223,7 @@ const getProgramUltime = async (req, res, err) => {
 const getPrograms = async (req, res, err) => {
   try {
     let programa = await programaModel
-      .find({ active: true }, { name: 1 })
+      .find({ active: true })
       .sort({ name: 1 });
 
     if (programa === null) throw new Error("No existe el programacion Activa");
@@ -232,7 +232,8 @@ const getPrograms = async (req, res, err) => {
       return (
         {
           value: obj._id,//{ id: obj._id, name: obj.name },
-          label: obj.name
+          label: obj.name,
+          luchas: obj.luchas
         })
     })
 

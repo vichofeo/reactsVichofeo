@@ -14,12 +14,12 @@ function TaskCard({ item, index }) {
             {...provided.dragHandleProps}
             style={{
               userSelect: "none",
-              padding: 16,
+              padding: 8,
               margin: "0 0 8px 0",
-              minHeight: "50px",
+              minHeight: "45px",
               backgroundColor: snapshot.isDragging ? "#263B4A" : "#456C86",
               color: "white",
-              borderRadius: "4px",
+              borderRadius: "6px",
               ...provided.draggableProps.style
             }}
           >

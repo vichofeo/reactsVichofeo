@@ -38,7 +38,7 @@ export default function AppMusic2 (){
       <button onClick={()=>{setList([...list, playList[0]]); setPlay(true)}}>uno</button>
       <button onClick={()=>{setList([...list, playList[1]]); setPlay(true)}}>dos</button>
       <button onClick={()=>{setList([playList[2]]); setPlay(true)}}>tres</button>
-      {console.log(list)}
+      
 
       <div style={{zIndex: 2035}} className="main-footer">
       
