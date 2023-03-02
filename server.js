@@ -30,9 +30,24 @@ var fs = require('fs')
 
 
 
-
+mongoose.set('strictQuery', false);
 let connectString = configuration.mongodb.development.connectionString;
+ 
+ //te es el bueno
+ mongoose.connect(
+  connectString,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (MongoError) => {
+    if (MongoError) {
+      console.error(`errro de conexion a BD${MongoError}`);
+      process.exit(1);
+    }
+    console.log("Conexión establecida con MongoDB Altas");
+    console.log("Servidor listo");
+  }
+);
 
+/*
 mongoose.set('strictQuery', false);
   mongoose
   .connect('mongodb://127.0.0.1:27017/iadb', {
@@ -45,7 +60,7 @@ mongoose.set('strictQuery', false);
   })
   .catch((error) => {
       console.log('error de conexion db....')
-  })
+  })*/
 
 //recursos externos arzacion pro headers
 // Access-Control-Allow-Origin: *
@@ -67,8 +82,10 @@ app.use(
 }
 */
 //virtual host
+//app.use(api)
 app.use(vhost('api.*', api))
-app.use(vhost('ia.io', api));
+//app.use(vhost('ia.io', api));
+
 /*
 //ruteos
 app.get('/*',(req, res)=>{
@@ -113,8 +130,8 @@ http.createServer(function(req,res){
   res.end()
 }).listen(80)
 */
-
-app.listen(8080, function () {
-  console.log("servidro node escuchando por el pueto 8080");
+app.set("port", process.env.PORT || configuration.server.port);
+app.listen(app.get("port"), function () {
+  console.log("servidro node escuchando por el pueto " + app.get("port"));
 });
  

@@ -7,11 +7,11 @@ import useGetDataView from "../hooks/useGetDataView"
 import ButtonPlay from "./inputsForms/ButtonPlay"
 
 const musicasAux = [
-  { name: "Entrada", src: "/muss/entrada.mp3", nombre: "", avatar: "" },
-  { name: "Finalizacion", src: "/muss/final.mp3", nombre: "", avatar: "" },
-  { name: "Arbitro Tecnico", src: "/muss/arbitroHenry.mp3", nombre: "", avatar: "" },
-  { name: "Arbitro Sucio", src: "/muss/arbitroBambino.mp3", nombre: "", avatar: "" },
-  { name: "Arbitro Raro", src: "/muss/arbitroAux.mp3", nombre: "", avatar: "" },
+  { name: "Entrada", src: "./muss/entrada.mp3", nombre: "", avatar: "" },
+  { name: "Finalizacion", src: "./muss/final.mp3", nombre: "", avatar: "" },
+  { name: "Arbitro Tecnico", src: "./muss/arbitroHenry.mp3", nombre: "", avatar: "" },
+  { name: "Arbitro Sucio", src: "./muss/arbitroBambino.mp3", nombre: "", avatar: "" },
+  { name: "Arbitro Raro", src: "./muss/arbitroAux.mp3", nombre: "", avatar: "" },
 ]
 
 const CVerPrograma = () => {

@@ -65,6 +65,10 @@ router.get('/getProgramUltime/:id', programaController.getProgramUltime)
 //acceso publico al servicio
 //router.get('/tweets/:user', tweetController.getUserTweets)
 
+router.get("/test", (req, res) => {
+  res.send("Esta es una prueba");
+});
+
 router.get("/*", function (req, res, err) {
   res.status(400).send({ message: "Servicio invalido" });
 });

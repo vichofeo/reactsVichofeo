@@ -1,4 +1,5 @@
 module.exports = {
+  //PORTEP: 8080, 
     debugMode: true,
     api: {
       host: 'http://api.localhost:8080',
@@ -11,8 +12,9 @@ module.exports = {
     
     mongodb: {
       development: {
+        //mongodb+srv://vichofeo:Bottyfeo%02$#@iadb.ndttbbo.mongodb.net/?retryWrites=true&w=majority
         connectionString:
-          'mongodb+srv://vichofeo:bottyfeo02@mytwiter.dhdxm.mongodb.net/myTwiter?retryWrites=true&w=majority',
+          'mongodb+srv://vichofeo:uZn2JzXba3dFsbT5@iadb.vwim9km.mongodb.net/?retryWrites=true&w=majority',
       },
       production: {
         connectionString:
