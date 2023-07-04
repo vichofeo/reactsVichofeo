@@ -2,8 +2,8 @@ module.exports = {
   //PORTEP: 8080, 
     debugMode: true,
     api: {
-      host: 'http://api.localhost:8080',
-      //host: "https://minitwitterapi.reactiveprogramming.io"
+      //host: 'http://api.localhost:8080',
+      host: "https://luapp.fly.dev"
     },
     server: {
       port: 8080,

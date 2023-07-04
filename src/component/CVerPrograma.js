@@ -7,11 +7,11 @@ import useGetDataView from "../hooks/useGetDataView"
 import ButtonPlay from "./inputsForms/ButtonPlay"
 
 const musicasAux = [
-  { name: "Entrada", src: "./muss/entrada.mp3", nombre: "", avatar: "" },
-  { name: "Finalizacion", src: "./muss/final.mp3", nombre: "", avatar: "" },
-  { name: "Arbitro Tecnico", src: "./muss/arbitroHenry.mp3", nombre: "", avatar: "" },
-  { name: "Arbitro Sucio", src: "./muss/arbitroBambino.mp3", nombre: "", avatar: "" },
-  { name: "Arbitro Raro", src: "./muss/arbitroAux.mp3", nombre: "", avatar: "" },
+  { name: "Entrada", src: "./reactsVichofeo/muss/entrada.mp3", nombre: "", avatar: "" },
+  { name: "Finalizacion", src: "./reactsVichofeo/muss/final.mp3", nombre: "", avatar: "" },
+  { name: "Arbitro Tecnico", src: "./reactsVichofeo/muss/arbitroHenry.mp3", nombre: "", avatar: "" },
+  { name: "Arbitro Sucio", src: "./reactsVichofeo/muss/arbitroBambino.mp3", nombre: "", avatar: "" },
+  { name: "Arbitro Raro", src: "./reactsVichofeo/muss/arbitroAux.mp3", nombre: "", avatar: "" },
 ]
 
 const CVerPrograma = () => {
@@ -89,7 +89,7 @@ const CVerPrograma = () => {
                       data-toggle="tab"
                       style={{
                         border: 'none',
-                        borderRadius: '5px',
+                        
                         cursor: 'pointer',
                         padding: '10px 20px',
                         //backgroundColor: '#0A283E',

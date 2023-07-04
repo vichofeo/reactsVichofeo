@@ -15,13 +15,13 @@ function App() {
     <BrowserRouter>
       <PageWrapper>
         <Routes>
-          <Route path="/" element={<Registro />} />
-          <Route path="/registro" element={<Navigate to="/" />} />
+          <Route path="/" element={<VerPrograma />} />
+          <Route path="/registro" element={<Registro/>} />
           <Route path="/programar" element={<Programar />} />
           <Route path="/reProgramar" element={<ReProgramar />} />
           <Route path="/verPrograma" element={<VerPrograma />} />
           <Route path="/music" element={<AppMusic />} />
-          <Route path="*" element={<NoPage />} />
+          <Route path="*" element={<VerPrograma />} />
         </Routes>
       </PageWrapper>
     </BrowserRouter>

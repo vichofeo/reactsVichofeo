@@ -67,7 +67,7 @@ export default function PageWrapper({ children }) {
               data-accordion="false"
             >
               <li className="nav-item">
-                <NavLink  to="/" className="nav-link">
+                <NavLink  to="./registro" className="nav-link">
                   <i className="nav-icon fas fa-th"></i>
                   <p>
                     Registro
@@ -87,14 +87,14 @@ export default function PageWrapper({ children }) {
                 </a>
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <NavLink to="/programar" className="nav-link">
+                    <NavLink to="./programar" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Hacer Programa</p>
                     </NavLink>
 
                   </li>
                   <li className="nav-item">
-                    <NavLink to="/reProgramar" className="nav-link">
+                    <NavLink to="./reProgramar" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Re Programar</p>
                     </NavLink>
@@ -105,7 +105,7 @@ export default function PageWrapper({ children }) {
 
               <li className="nav-header">Programa</li>
               <li className="nav-item">
-                <NavLink to= "/verPrograma" className="nav-link">
+                <NavLink to= "./verPrograma" className="nav-link">
                 <i className="nav-icon far fa-circle text-danger"></i>
                   <p className="text">Ver Fecha activa</p>
                 </NavLink>
